@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Yelp_mini</string>
+    <string name="error">Error in getting list</string>
+
+</resources>
