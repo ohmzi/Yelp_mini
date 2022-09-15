@@ -1,6 +1,7 @@
 package com.mainApp.yelp_mini.retro_services
 
 import com.mainApp.yelp_mini.data.YelpBusinessDetail
+import com.mainApp.yelp_mini.data.YelpReviews
 import com.mainApp.yelp_mini.data.YelpSearchResult
 
 import retrofit2.Call
@@ -22,4 +23,10 @@ interface YelpService {
         @Header("Authorization") authHeader: String,
         @Path("id") id: String,
     ): Call<YelpBusinessDetail>
+
+    @GET("businesses/{id}/reviews")
+    fun getReviews(
+        @Header("Authorization") authHeader: String,
+        @Path("id") id: String,
+    ): Call<YelpReviews>
 }

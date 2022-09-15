@@ -2,18 +2,28 @@ package com.mainApp.yelp_mini
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.tabs.TabLayout
 import com.mainApp.yelp_mini.data.YelpBusinessDetail
+import com.mainApp.yelp_mini.data.YelpReview
+import com.mainApp.yelp_mini.data.YelpReviews
 import com.mainApp.yelp_mini.retro_services.RetroInstance
 import com.mainApp.yelp_mini.retro_services.YelpService
 import kotlinx.android.synthetic.main.activity_detail.*
+import kotlinx.android.synthetic.main.fragment_restaurant_overview.*
+import kotlinx.android.synthetic.main.fragment_restaurant_reviews.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 private const val TAG = "DetailActivityAPICALL"
 private const val BASE_URL = "https://api.yelp.com/v3/"
@@ -22,7 +32,10 @@ private const val API_KEY =
 private lateinit var restaurantID: String
 
 class DetailActivity : AppCompatActivity() {
+    val reviews = mutableListOf<YelpReview>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         val extras = intent.extras
@@ -31,7 +44,19 @@ class DetailActivity : AppCompatActivity() {
             //  drestaurantID.text = "ID: $restaurantID"
         }
 
+        val viewPager = findViewById<View>(R.id.viewpager) as ViewPager
+        var pagerAdapter = MyFragmentPagerAdapter(supportFragmentManager, this)
+        viewPager.adapter = pagerAdapter
+
+        pagerAdapter.addFragment(OverviewFragment(), "Overview")
+        pagerAdapter.addFragment(ReviewsFragment(), "Reviews")
+        pagerAdapter.notifyDataSetChanged()
+
+        val tabLayout = findViewById<View>(R.id.sliding_tabs) as TabLayout
+        tabLayout.setupWithViewPager(viewPager)
+
         makeAPICall()
+        makeAPICall2()
     }
 
 
@@ -59,7 +84,7 @@ class DetailActivity : AppCompatActivity() {
                 Log.w(TAG, body.transactions.toString())
 
                 photos.addAll(body.photos)
-                bind(body)
+                bindInfo(body)
             }
 
             override fun onFailure(call: Call<YelpBusinessDetail>, t: Throwable) {
@@ -69,13 +94,41 @@ class DetailActivity : AppCompatActivity() {
 
 
     }
+    fun makeAPICall2(){
+        val retroInstance = RetroInstance.getRetroInstance()
+        val yelpService = retroInstance.create(YelpService::class.java)
+        val call = yelpService.getReviews("Bearer $API_KEY", restaurantID)
 
 
-    fun bind(body: YelpBusinessDetail) {
+        call.enqueue(object : Callback<YelpReviews> {
+                override fun onResponse(
+                    call: Call<YelpReviews>,
+                    response: Response<YelpReviews>
+                ) {
+                    Log.i(TAG, "onResponse $response")
+                    val body = response.body()
+                    if (body == null) {
+                        Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
+                        return
+                    }
+                    bindReviews()
+                    reviews.addAll(body.reviews)
+                }
+
+                override fun onFailure(call: Call<YelpReviews>, t: Throwable) {
+                    Log.i(TAG, "onFailure $t")
+                }
+            })
+    }
+
+
+    fun bindInfo(body: YelpBusinessDetail) {
         var price = body.price
-        if (price == null){
+        if (price == null) {
             price = "$"
         }
+
+
         Glide.with(this@DetailActivity).load(body.imageUrl).apply(
             RequestOptions().transforms(
                 CenterCrop(), RoundedCorners(20)
@@ -84,13 +137,26 @@ class DetailActivity : AppCompatActivity() {
         tvName.text = body.name
         ratingBar.rating = body.rating.toFloat()
         tvNumReviews.text = "${body.numReviews} Reviews"
-
         tvPrice.text = price
         tvCategory.text = body.categories.joinToString { c -> c.title }
         tvAddress.text = "Address: ${body.location.address}"
         tvPhone.text = "Call: ${body.phone}"
-        tvHours.text = body.transactions.joinToString { t -> t.capitalize() }
+        tvTransactions.text =
+            body.transactions.joinToString { t -> t.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            } }
 
 
+    }
+
+    fun bindReviews() {
+        rvReviews.adapter = ReviewAdapter(this, reviews)
+        rvReviews.layoutManager = LinearLayoutManager(this)
+        rvReviews.addItemDecoration(
+            DividerItemDecoration(
+                rvReviews.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 }

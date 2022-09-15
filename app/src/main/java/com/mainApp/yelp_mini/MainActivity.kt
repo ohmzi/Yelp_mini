@@ -12,6 +12,9 @@ import com.mainApp.yelp_mini.viewModel.ViewModelClass
 import com.mainApp.yelp_mini.databinding.ActivityMainBinding
 
 private lateinit var binding: ActivityMainBinding
+private lateinit var categoryTextInput: String
+private lateinit var locationTextInput: String
+private lateinit var restaurantNameTextInput: String
 
 class MainActivity : AppCompatActivity() {
     private val recyclerAdapter by lazy { RestaurantsAdapter(this) }
@@ -19,6 +22,15 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val extras = intent.extras
+        if (extras != null) {
+            categoryTextInput = extras.getString("categoryTextInput") as String
+            locationTextInput = extras.getString("locationTextInput") as String
+            restaurantNameTextInput = extras.getString("restaurantNameTextInput") as String
+
+            Toast.makeText(this, categoryTextInput, Toast.LENGTH_SHORT).show()
+        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -38,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             }
         }
-        viewModelClass.makeAPICall()
+        viewModelClass.makeAPICall(categoryTextInput, locationTextInput, restaurantNameTextInput)
 
 
     }

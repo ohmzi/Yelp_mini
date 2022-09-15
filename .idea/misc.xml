@@ -6,7 +6,17 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.4447463768115942" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.8758109360518999" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.46041666666666664" />
+        <entry key="app/src/main/res/layout/activity_searc_home.xml" value="0.27037037037037037" />
+        <entry key="app/src/main/res/layout/activity_search_home.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/blah.xml" value="0.5135416666666667" />
+        <entry key="app/src/main/res/layout/content_searc_home.xml" value="0.27037037037037037" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.875" />
+        <entry key="app/src/main/res/layout/fragment_restaurant_overview.xml" value="0.5932291666666667" />
+        <entry key="app/src/main/res/layout/fragment_restaurant_reviews.xml" value="0.515625" />
+        <entry key="app/src/main/res/layout/fragment_second.xml" value="0.1824074074074074" />
+        <entry key="app/src/main/res/layout/home_search.xml" value="0.27037037037037037" />
         <entry key="app/src/main/res/layout/item_restaurant.xml" value="0.4942708333333333" />
+        <entry key="app/src/main/res/layout/item_review.xml" value="0.5932291666666667" />
         <entry key="app/src/main/res/layout/search_bar.xml" value="0.8418651799290421" />
       </map>
     </option>

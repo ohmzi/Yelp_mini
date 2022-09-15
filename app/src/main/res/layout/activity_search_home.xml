@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageViewBusinessDetail"
+        android:layout_width="match_parent"
+        android:layout_height="275dp"
+        android:rotationX="360"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_yelp"
+        tools:srcCompat="@drawable/bg_yelp" />
+
+    <EditText
+        android:id="@+id/restaurantNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="Restaurant Name"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewBusinessDetail" />
+
+    <EditText
+        android:id="@+id/categoryInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="Category"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantNameInput" />
+
+    <EditText
+        android:id="@+id/locationInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="Location"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/categoryInput" />
+
+    <Button
+        android:id="@+id/bnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Search"
+        android:backgroundTint="@android:color/holo_red_dark"
+        app:layout_constraintTop_toBottomOf="@+id/locationInput" />
+
+
+</LinearLayout>
