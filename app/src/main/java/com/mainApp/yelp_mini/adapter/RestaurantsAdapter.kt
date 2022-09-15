@@ -1,18 +1,23 @@
 package com.mainApp.yelp_mini.adapter
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.mainApp.yelp_mini.DetailActivity
 import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.data.YelpSearchResult
 import kotlinx.android.synthetic.main.item_restaurant.view.*
 import kotlin.math.roundToInt
+
 
 class RestaurantsAdapter(val activity: Activity) :
     RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
@@ -39,8 +44,23 @@ class RestaurantsAdapter(val activity: Activity) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(restaurantsList?.get(position)!!, activity)
+        holder.itemView.setOnClickListener(View.OnClickListener {
+            Toast.makeText(
+                holder.itemView.context,
+                "Recycle Click$position",
+                Toast.LENGTH_SHORT
+            ).show()
+            val restaurant = restaurantsList?.get(position)
+            if (restaurant != null) {
+                openNewActivity(restaurant, holder.itemView.context)
+            }
+        })
     }
 
+    private fun openNewActivity(restaurant: YelpSearchResult.YelpRestaurant, context: Context) {
+        context.startActivity(Intent(context, DetailActivity::class.java)
+            .putExtra("restaurantID", restaurant.id))
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(restaurant: YelpSearchResult.YelpRestaurant, activity: Activity) {
