@@ -6,7 +6,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -45,11 +44,6 @@ class RestaurantsAdapter(val activity: Activity) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(restaurantsList?.get(position)!!, activity)
         holder.itemView.setOnClickListener(View.OnClickListener {
-            Toast.makeText(
-                holder.itemView.context,
-                "Recycle Click$position",
-                Toast.LENGTH_SHORT
-            ).show()
             val restaurant = restaurantsList?.get(position)
             if (restaurant != null) {
                 openNewActivity(restaurant, holder.itemView.context)

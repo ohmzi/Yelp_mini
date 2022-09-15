@@ -17,7 +17,6 @@ class ViewModelClass : ViewModel() {
     private lateinit var categoryInputLocal: String
     private lateinit var locationInputLocal: String
     private lateinit var restaurantNameInputLocal: String
-    var listIsEmpty: Boolean = false
 
     val restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
 
@@ -53,18 +52,15 @@ class ViewModelClass : ViewModel() {
                             TAG,
                             "Did not receive valid response body from Yelp API... exiting"
                         )
-                        listIsEmpty = true
-                     //   return
+                        return
 
                     } else {
                         Log.w(
                             TAG,
                             "body ${body.total}"
                         )
-                        //listIsEmpty = false
-                        restaurants.postValue(body)
+                        restaurants.postValue(body)//since this is in else statement when null is not possible, the nullable value is not getting sent.
                         Log.d("MakeAPICall", "onResponse $body")
-                        //Log.d("restaurantsAT2", "onResponse ${restaurants[2]}")
 
                     }
 

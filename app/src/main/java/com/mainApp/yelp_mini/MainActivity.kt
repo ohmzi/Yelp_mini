@@ -4,9 +4,6 @@ package com.mainApp.yelp_mini
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -14,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mainApp.yelp_mini.adapter.RestaurantsAdapter
 import com.mainApp.yelp_mini.databinding.ActivityMainBinding
 import com.mainApp.yelp_mini.viewModel.ViewModelClass
-import kotlinx.android.synthetic.main.activity_main.*
 
 private lateinit var binding: ActivityMainBinding
 private lateinit var categoryTextInput: String

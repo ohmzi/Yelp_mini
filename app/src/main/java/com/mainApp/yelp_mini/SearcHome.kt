@@ -42,8 +42,6 @@ class SearchHome : AppCompatActivity() {
             restaurantNameTextInput = restaurantNameInput.text.toString()
 
 
-            //Showing the user input
-            //Toast.makeText(this, categoryTextInput, Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
 
             val extras = Bundle()

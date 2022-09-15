@@ -1,5 +1,6 @@
 package com.mainApp.yelp_mini
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -128,6 +129,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     fun bindInfo(body: YelpBusinessDetail) {
         var price = body.price
         if (price == null) {
