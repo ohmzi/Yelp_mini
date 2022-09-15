@@ -10,7 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import com.mainApp.yelp_mini.databinding.ActivitySearchHomeBinding
 
 
-class SearchHome() : AppCompatActivity() {
+class SearchHome : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySearchHomeBinding
 

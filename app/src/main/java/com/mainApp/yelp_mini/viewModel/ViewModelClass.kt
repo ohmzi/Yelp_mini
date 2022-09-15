@@ -12,8 +12,9 @@ import retrofit2.Response
 
 class ViewModelClass : ViewModel() {
     private val TAG = "ViewModel"
-    private val API_KEY = "Vzx4IpLKoLVNrsNwyg6jc-4qq_TOmV_w2h8jl0QJmnmwV_cKIBkCpWSRbp5ws7D4wxw6eSIbVtUrIIRB6-BadCBge5xxnICs4h92A-8nuORQJGtW9MQvvk_IGH0fY3Yx"
-    private lateinit var categoryInputLocal:String
+    private val API_KEY =
+        "Vzx4IpLKoLVNrsNwyg6jc-4qq_TOmV_w2h8jl0QJmnmwV_cKIBkCpWSRbp5ws7D4wxw6eSIbVtUrIIRB6-BadCBge5xxnICs4h92A-8nuORQJGtW9MQvvk_IGH0fY3Yx"
+    private lateinit var categoryInputLocal: String
     private lateinit var locationInputLocal: String
     private lateinit var restaurantNameInputLocal: String
     val restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
@@ -23,14 +24,17 @@ class ViewModelClass : ViewModel() {
         return restaurants
     }
 
-    fun makeAPICall(categoryInput:String, locationInput: String, restaurantNameInput: String) {
-        categoryInputLocal =  categoryInput
-        locationInputLocal= locationInput
-        restaurantNameInputLocal= restaurantNameInput
+    fun makeAPICall(categoryInput: String, locationInput: String, restaurantNameInput: String) {
+        categoryInputLocal = categoryInput
+        locationInputLocal = locationInput
+        restaurantNameInputLocal = restaurantNameInput
 
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
-        val call = yelpService.searchRestaurants("Bearer $API_KEY", restaurantNameInput, categoryInput,locationInput)
+        val call = yelpService.searchRestaurants("Bearer $API_KEY",
+            restaurantNameInput,
+            categoryInput,
+            locationInput)
 
 
         call.enqueue(
@@ -49,7 +53,7 @@ class ViewModelClass : ViewModel() {
                         )
                         return
                     } else {
-                        restaurants.postValue(body!!)
+                        restaurants.postValue(body)
                         Log.d("MakeAPICall", "onResponse $body")
                         //    Log.d("restaurantsAT2", "onResponse ${restaurants[2]}")
 

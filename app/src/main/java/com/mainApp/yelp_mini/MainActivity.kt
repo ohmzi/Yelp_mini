@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mainApp.yelp_mini.adapter.RestaurantsAdapter
-import com.mainApp.yelp_mini.viewModel.ViewModelClass
 import com.mainApp.yelp_mini.databinding.ActivityMainBinding
+import com.mainApp.yelp_mini.viewModel.ViewModelClass
 
 private lateinit var binding: ActivityMainBinding
 private lateinit var categoryTextInput: String
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         binding.rvRestaurants.adapter = recyclerAdapter
 
         val viewModelClass: ViewModelClass =
-            ViewModelProvider(this).get(ViewModelClass::class.java)
+            ViewModelProvider(this)[ViewModelClass::class.java]
         viewModelClass.getLiveDataObserver().observe(this) {
             if (it != null) {
                 recyclerAdapter.setRestaurantsList(it.restaurants)

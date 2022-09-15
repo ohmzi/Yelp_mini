@@ -93,31 +93,32 @@ class DetailActivity : AppCompatActivity() {
 
 
     }
-    fun makeAPICall2(){
+
+    fun makeAPICall2() {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getReviews("Bearer $API_KEY", restaurantID)
 
 
         call.enqueue(object : Callback<YelpReviews> {
-                override fun onResponse(
-                    call: Call<YelpReviews>,
-                    response: Response<YelpReviews>
-                ) {
-                    Log.i(TAG, "onResponse $response")
-                    val body = response.body()
-                    if (body == null) {
-                        Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
-                        return
-                    }
-                    bindReviews()
-                    reviews.addAll(body.reviews)
+            override fun onResponse(
+                call: Call<YelpReviews>,
+                response: Response<YelpReviews>,
+            ) {
+                Log.i(TAG, "onResponse $response")
+                val body = response.body()
+                if (body == null) {
+                    Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
+                    return
                 }
+                bindReviews()
+                reviews.addAll(body.reviews)
+            }
 
-                override fun onFailure(call: Call<YelpReviews>, t: Throwable) {
-                    Log.i(TAG, "onFailure $t")
-                }
-            })
+            override fun onFailure(call: Call<YelpReviews>, t: Throwable) {
+                Log.i(TAG, "onFailure $t")
+            }
+        })
     }
 
 
@@ -141,9 +142,11 @@ class DetailActivity : AppCompatActivity() {
         tvAddress.text = "Address: ${body.location.address}"
         tvPhone.text = "Call: ${body.phone}"
         tvTransactions.text =
-            body.transactions.joinToString { t -> t.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-            } }
+            body.transactions.joinToString { t ->
+                t.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                }
+            }
 
 
     }
