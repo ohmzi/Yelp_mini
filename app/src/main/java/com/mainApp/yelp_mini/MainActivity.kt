@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
             categoryTextInput = extras.getString("categoryTextInput") as String
             locationTextInput = extras.getString("locationTextInput") as String
             restaurantNameTextInput = extras.getString("restaurantNameTextInput") as String
-
-            Toast.makeText(this, categoryTextInput, Toast.LENGTH_SHORT).show()
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)

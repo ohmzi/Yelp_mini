@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
 import com.mainApp.yelp_mini.databinding.ActivitySearchHomeBinding
@@ -44,16 +43,16 @@ class SearchHome() : AppCompatActivity() {
             restaurantNameTextInput = restaurantNameInput.text.toString()
 
 
-
-            // Showing the user input
-         //   Toast.makeText(this, categoryTextInput, Toast.LENGTH_SHORT).show()
+            //Showing the user input
+            //Toast.makeText(this, categoryTextInput, Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
 
             val extras = Bundle()
             extras.putString("categoryTextInput", categoryTextInput)
             extras.putString("locationTextInput", locationTextInput)
             extras.putString("restaurantNameTextInput", restaurantNameTextInput)
-            Log.w("SearchHome", "$restaurantNameTextInput + $locationTextInput + $categoryTextInput")
+            Log.w("SearchHome",
+                "$restaurantNameTextInput + $locationTextInput + $categoryTextInput")
 
             intent.putExtras(extras)
             startActivity(intent)

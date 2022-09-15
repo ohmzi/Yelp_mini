@@ -41,11 +41,10 @@ class DetailActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             restaurantID = extras.getString("restaurantID") as String
-            //  drestaurantID.text = "ID: $restaurantID"
         }
 
         val viewPager = findViewById<View>(R.id.viewpager) as ViewPager
-        var pagerAdapter = MyFragmentPagerAdapter(supportFragmentManager, this)
+        val pagerAdapter = MyFragmentPagerAdapter(supportFragmentManager, this)
         viewPager.adapter = pagerAdapter
 
         pagerAdapter.addFragment(OverviewFragment(), "Overview")
@@ -61,7 +60,7 @@ class DetailActivity : AppCompatActivity() {
 
 
     fun makeAPICall() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val photos = mutableListOf<String>()
 
