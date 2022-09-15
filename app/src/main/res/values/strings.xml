@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Yelp_mini</string>
-    <string name="title_activity_searc_home">SearcHome</string>
+    <string name="app_name">Yelp Mini</string>
+    <string name="title_activity_search_home">Search Home</string>
     <!-- Strings used for fragments for navigation -->
     <string name="previous">Previous</string>
 

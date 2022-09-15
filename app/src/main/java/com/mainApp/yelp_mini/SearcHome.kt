@@ -6,12 +6,10 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.ui.AppBarConfiguration
 import com.mainApp.yelp_mini.databinding.ActivitySearchHomeBinding
 
 
 class SearchHome : AppCompatActivity() {
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivitySearchHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +19,7 @@ class SearchHome : AppCompatActivity() {
         var restaurantNameTextInput: String
 
         super.onCreate(savedInstanceState)
+
 
         binding = ActivitySearchHomeBinding.inflate(layoutInflater)
         val view = binding.root
@@ -55,7 +54,13 @@ class SearchHome : AppCompatActivity() {
                 "$restaurantNameTextInput + $locationTextInput + $categoryTextInput")
 
             intent.putExtras(extras)
-            startActivity(intent)
+
+            if (locationTextInput.equals("")) {
+                locationInput.error = "Required" //it gives user to hint
+                locationInput.hint = "Please Enter Address, City or Postal Code"  //it gives user to info message //use any one //
+            } else {
+                startActivity(intent)
+            }
 
         }
     }

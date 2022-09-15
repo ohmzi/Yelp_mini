@@ -38,6 +38,8 @@ class DetailActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         val extras = intent.extras
         if (extras != null) {
             restaurantID = extras.getString("restaurantID") as String
@@ -58,6 +60,10 @@ class DetailActivity : AppCompatActivity() {
         makeAPICall2()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     fun makeAPICall() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -81,7 +87,7 @@ class DetailActivity : AppCompatActivity() {
                     return
                 }
                 Log.w(TAG, body.transactions.toString())
-
+                supportActionBar!!.title = body.name
                 photos.addAll(body.photos)
                 bindInfo(body)
             }
