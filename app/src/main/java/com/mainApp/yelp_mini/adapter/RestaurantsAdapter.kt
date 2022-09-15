@@ -64,13 +64,17 @@ class RestaurantsAdapter(val activity: Activity) :
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(restaurant: YelpSearchResult.YelpRestaurant, activity: Activity) {
+            var price = restaurant.price
+            if (price == null){
+                price = "$"
+            }
             itemView.tvName.text = restaurant.name
             itemView.ratingBar.rating = restaurant.rating.toFloat()
             itemView.tvNumReviews.text = "${restaurant.numReviews.toString()} Reviews"
             itemView.tvAddress.text = restaurant.location.address
             itemView.tvCategory.text = restaurant.categories[0].title
             itemView.tvDistance.text = restaurant.distance.roundToInt().toString() + " km"
-            itemView.tvPrice.text = restaurant.price
+            itemView.tvPrice.text = price
             Glide.with(activity).load(restaurant.imageUrl).apply(
                 RequestOptions().transforms(
                     CenterCrop(), RoundedCorners(20)

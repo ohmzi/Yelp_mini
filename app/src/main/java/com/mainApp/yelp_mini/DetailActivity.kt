@@ -3,6 +3,10 @@ package com.mainApp.yelp_mini
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.mainApp.yelp_mini.data.YelpBusinessDetail
 import com.mainApp.yelp_mini.retro_services.RetroInstance
 import com.mainApp.yelp_mini.retro_services.YelpService
@@ -24,7 +28,7 @@ class DetailActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             restaurantID = extras.getString("restaurantID") as String
-            drestaurantID.text = "ID: $restaurantID"
+            //  drestaurantID.text = "ID: $restaurantID"
         }
 
         makeAPICall()
@@ -32,6 +36,8 @@ class DetailActivity : AppCompatActivity() {
 
 
     fun makeAPICall() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+
         val photos = mutableListOf<String>()
 
         val retroInstance = RetroInstance.getRetroInstance()
@@ -50,7 +56,7 @@ class DetailActivity : AppCompatActivity() {
                     Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
                     return
                 }
-                Log.w(TAG, body.name)
+                Log.w(TAG, body.transactions.toString())
 
                 photos.addAll(body.photos)
                 bind(body)
@@ -61,9 +67,30 @@ class DetailActivity : AppCompatActivity() {
             }
         })
 
+
     }
 
 
     fun bind(body: YelpBusinessDetail) {
+        var price = body.price
+        if (price == null){
+            price = "$"
+        }
+        Glide.with(this@DetailActivity).load(body.imageUrl).apply(
+            RequestOptions().transforms(
+                CenterCrop(), RoundedCorners(20)
+            )).into(imageViewBusinessDetail)
+
+        tvName.text = body.name
+        ratingBar.rating = body.rating.toFloat()
+        tvNumReviews.text = "${body.numReviews} Reviews"
+
+        tvPrice.text = price
+        tvCategory.text = body.categories.joinToString { c -> c.title }
+        tvAddress.text = "Address: ${body.location.address}"
+        tvPhone.text = "Call: ${body.phone}"
+        tvHours.text = body.transactions.joinToString { t -> t.capitalize() }
+
+
     }
 }

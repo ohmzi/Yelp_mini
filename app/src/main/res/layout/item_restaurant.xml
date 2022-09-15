@@ -17,7 +17,10 @@
         app:layout_constraintEnd_toStartOf="@+id/tvDistance"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Charley St" />
+        android:textColor="@android:color/black"
+        tools:text="Tim Hortons"
+
+        />
 
     <ImageView
         android:id="@+id/imageView"
@@ -29,9 +32,10 @@
 
     <RatingBar
         android:id="@+id/ratingBar"
-        style="@style/Widget.AppCompat.RatingBar.Small"
+        style="@android:style/Widget.Holo.Light.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:progressTint="#FF5722"
         android:layout_marginTop="4dp"
         android:numStars="5"
         android:rating="4.5"

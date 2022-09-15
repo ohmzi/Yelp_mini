@@ -26,7 +26,7 @@ class ViewModelClass : ViewModel() {
 
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
-        val call = yelpService.searchRestaurants("Bearer $API_KEY", "Bagel", "Paris")
+        val call = yelpService.searchRestaurants("Bearer $API_KEY", "Steak", "Lasalle")
 
 
         call.enqueue(

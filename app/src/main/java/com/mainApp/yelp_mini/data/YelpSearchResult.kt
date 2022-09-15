@@ -37,10 +37,10 @@ data class YelpBusinessDetail(
     val transactions: List<String>,
 )
 
-    data class YelpCategory(
-        val title: String,
-    )
+data class YelpCategory(
+    val title: String,
+)
 
-    data class YelpLocation(
-        @SerializedName("address1") val address: String,
-    )
+data class YelpLocation(
+    @SerializedName("address1") val address: String,
+)
