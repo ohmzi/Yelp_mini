@@ -1,4 +1,4 @@
-package com.mainApp.yelp_mini
+package com.mainApp.yelp_mini.fragments
 
 import android.content.Context
 import android.util.Log

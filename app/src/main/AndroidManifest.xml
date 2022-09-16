@@ -16,10 +16,10 @@
         android:theme="@style/Theme.Yelp_mini"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".resultsScreen.MainActivity"
             android:exported="true"/>
         <activity
-            android:name=".DetailActivity"
+            android:name=".detailsScreen.DetailActivity"
             android:exported="true" />
         <activity
             android:name=".SearchHome"

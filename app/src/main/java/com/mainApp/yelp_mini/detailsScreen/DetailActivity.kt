@@ -1,4 +1,4 @@
-package com.mainApp.yelp_mini
+package com.mainApp.yelp_mini.detailsScreen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,9 +13,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
+import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.data.YelpBusinessDetail
 import com.mainApp.yelp_mini.data.YelpReview
 import com.mainApp.yelp_mini.data.YelpReviews
+import com.mainApp.yelp_mini.fragments.MyFragmentPagerAdapter
+import com.mainApp.yelp_mini.fragments.OverviewFragment
+import com.mainApp.yelp_mini.fragments.ReviewsFragment
 import com.mainApp.yelp_mini.retro_services.RetroInstance
 import com.mainApp.yelp_mini.retro_services.YelpService
 import kotlinx.android.synthetic.main.activity_detail.*

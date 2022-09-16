@@ -1,10 +1,11 @@
-package com.mainApp.yelp_mini
+package com.mainApp.yelp_mini.detailsScreen
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.data.YelpReview
 import kotlinx.android.synthetic.main.item_review.view.*
 import java.text.ParseException

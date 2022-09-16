@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.mainApp.yelp_mini.databinding.ActivitySearchHomeBinding
+import com.mainApp.yelp_mini.resultsScreen.MainActivity
 
 
 class SearchHome : AppCompatActivity() {
@@ -55,7 +56,8 @@ class SearchHome : AppCompatActivity() {
 
             if (locationTextInput.equals("")) {
                 locationInput.error = "Required" //it gives user to hint
-                locationInput.hint = "Please Enter Address, City or Postal Code"  //it gives user to info message //use any one //
+                locationInput.hint =
+                    "Please Enter Address, City or Postal Code"  //it gives user to info message //use any one //
             } else {
                 startActivity(intent)
             }

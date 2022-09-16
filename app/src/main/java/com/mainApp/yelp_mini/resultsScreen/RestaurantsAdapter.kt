@@ -1,4 +1,4 @@
-package com.mainApp.yelp_mini.adapter
+package com.mainApp.yelp_mini.resultsScreen
 
 import android.app.Activity
 import android.content.Context
@@ -11,9 +11,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.mainApp.yelp_mini.DetailActivity
 import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.data.YelpSearchResult
+import com.mainApp.yelp_mini.detailsScreen.DetailActivity
 import kotlinx.android.synthetic.main.item_restaurant.view.*
 import kotlin.math.roundToInt
 
