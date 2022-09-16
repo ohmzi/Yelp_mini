@@ -14,9 +14,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import com.mainApp.yelp_mini.R
-import com.mainApp.yelp_mini.data.YelpBusinessDetail
-import com.mainApp.yelp_mini.data.YelpReview
-import com.mainApp.yelp_mini.data.YelpReviews
+import com.mainApp.yelp_mini.data.YelpRestaurantDetail
+import com.mainApp.yelp_mini.data.RestaurantReview
+import com.mainApp.yelp_mini.data.YelpRestaurantReviews
 import com.mainApp.yelp_mini.fragments.MyFragmentPagerAdapter
 import com.mainApp.yelp_mini.fragments.OverviewFragment
 import com.mainApp.yelp_mini.fragments.ReviewsFragment
@@ -37,7 +37,7 @@ private const val API_KEY =
 private lateinit var restaurantID: String
 
 class DetailActivity : AppCompatActivity() {
-    val reviews = mutableListOf<YelpReview>()
+    val reviews = mutableListOf<RestaurantReview>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -61,8 +61,8 @@ class DetailActivity : AppCompatActivity() {
         val tabLayout = findViewById<View>(R.id.sliding_tabs) as TabLayout
         tabLayout.setupWithViewPager(viewPager)
 
-        makeAPICall()
-        makeAPICall2()
+        restaurantDetailAPICall()
+        restaurantReviewAPICall()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -70,20 +70,17 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    fun makeAPICall() {
+    private fun restaurantDetailAPICall() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         val photos = mutableListOf<String>()
-
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
-        val call = yelpService.getDetails("Bearer $API_KEY", restaurantID)
+        val call = yelpService.getRestaurantsDetails("Bearer $API_KEY", restaurantID)
 
-
-        call.enqueue(object : Callback<YelpBusinessDetail> {
+        call.enqueue(object : Callback<YelpRestaurantDetail> {
             override fun onResponse(
-                call: Call<YelpBusinessDetail>,
-                response: Response<YelpBusinessDetail>,
+                call: Call<YelpRestaurantDetail>,
+                response: Response<YelpRestaurantDetail>,
             ) {
                 Log.i(TAG, "onResponse $response")
                 val body = response.body()
@@ -96,25 +93,22 @@ class DetailActivity : AppCompatActivity() {
                 photos.addAll(body.photos)
                 bindInfo(body)
             }
-
-            override fun onFailure(call: Call<YelpBusinessDetail>, t: Throwable) {
+            override fun onFailure(call: Call<YelpRestaurantDetail>, t: Throwable) {
                 Log.i(TAG, "onFailure $t")
             }
         })
-
-
     }
 
-    fun makeAPICall2() {
+    private fun restaurantReviewAPICall() {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
-        val call = yelpService.getReviews("Bearer $API_KEY", restaurantID)
+        val call = yelpService.getRestaurantsReviews("Bearer $API_KEY", restaurantID)
 
 
-        call.enqueue(object : Callback<YelpReviews> {
+        call.enqueue(object : Callback<YelpRestaurantReviews> {
             override fun onResponse(
-                call: Call<YelpReviews>,
-                response: Response<YelpReviews>,
+                call: Call<YelpRestaurantReviews>,
+                response: Response<YelpRestaurantReviews>,
             ) {
                 Log.i(TAG, "onResponse $response")
                 val body = response.body()
@@ -125,8 +119,7 @@ class DetailActivity : AppCompatActivity() {
                 bindReviews()
                 reviews.addAll(body.reviews)
             }
-
-            override fun onFailure(call: Call<YelpReviews>, t: Throwable) {
+            override fun onFailure(call: Call<YelpRestaurantReviews>, t: Throwable) {
                 Log.i(TAG, "onFailure $t")
             }
         })
@@ -134,7 +127,7 @@ class DetailActivity : AppCompatActivity() {
 
 
     @SuppressLint("SetTextI18n")
-    fun bindInfo(body: YelpBusinessDetail) {
+    fun bindInfo(body: YelpRestaurantDetail) {
         var price = body.price
         if (price == null) {
             price = "$"
@@ -164,7 +157,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun bindReviews() {
-        rvReviews.adapter = ReviewAdapter(this, reviews)
+        rvReviews.adapter = DetailReviewAdapter(this, reviews)
         rvReviews.layoutManager = LinearLayoutManager(this)
         rvReviews.addItemDecoration(
             DividerItemDecoration(

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mainApp.yelp_mini.R
-import com.mainApp.yelp_mini.data.YelpReview
+import com.mainApp.yelp_mini.data.RestaurantReview
 import kotlinx.android.synthetic.main.item_review.view.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -14,10 +14,10 @@ import java.util.*
 
 private const val TAG = "RestaurantsAdapter"
 
-class ReviewAdapter(
+class DetailReviewAdapter(
     val context: Context,
-    private val reviews: List<YelpReview>,
-) : RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
+    private val reviews: List<RestaurantReview>,
+) : RecyclerView.Adapter<DetailReviewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_review, parent, false))
@@ -30,7 +30,7 @@ class ReviewAdapter(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(review: YelpReview) {
+        fun bind(review: RestaurantReview) {
             itemView.tvReviewName.text = review.user.name
             itemView.rbReview.rating = review.rating.toFloat()
 

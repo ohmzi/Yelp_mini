@@ -9,15 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mainApp.yelp_mini.databinding.ActivityMainBinding
-import com.mainApp.yelp_mini.viewModel.ViewModelClass
 
 private lateinit var binding: ActivityMainBinding
 private lateinit var categoryTextInput: String
 private lateinit var locationTextInput: String
 private lateinit var restaurantNameTextInput: String
 
-class MainActivity : AppCompatActivity() {
-    private val recyclerAdapter by lazy { RestaurantsAdapter(this) }
+class ResultsActivity : AppCompatActivity() {
+    private val recyclerAdapter by lazy { ResultsRestaurantsAdapter(this) }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +38,9 @@ class MainActivity : AppCompatActivity() {
         binding.rvRestaurants.layoutManager = LinearLayoutManager(this)
         binding.rvRestaurants.adapter = recyclerAdapter
 
-        val viewModelClass: ViewModelClass =
-            ViewModelProvider(this)[ViewModelClass::class.java]
-        viewModelClass.getLiveDataObserver().observe(this) {
+        val resultsViewModelClass: ResultsViewModelClass =
+            ViewModelProvider(this)[ResultsViewModelClass::class.java]
+        resultsViewModelClass.getLiveDataObserver().observe(this) {
             if (it.restaurants.isEmpty()) {
                 Log.d("Blankresult", "Error in getting list")
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 recyclerAdapter.notifyDataSetChanged()
             }
         }
-        viewModelClass.makeAPICall(categoryTextInput, locationTextInput, restaurantNameTextInput)
+        resultsViewModelClass.makeAPICall(categoryTextInput, locationTextInput, restaurantNameTextInput)
 
 
     }

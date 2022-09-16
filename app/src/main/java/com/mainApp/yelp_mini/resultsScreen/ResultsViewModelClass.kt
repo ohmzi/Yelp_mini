@@ -1,4 +1,4 @@
-package com.mainApp.yelp_mini.viewModel
+package com.mainApp.yelp_mini.resultsScreen
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ViewModelClass : ViewModel() {
+class ResultsViewModelClass : ViewModel() {
     private val TAG = "ViewModel"
     private val API_KEY =
         "Vzx4IpLKoLVNrsNwyg6jc-4qq_TOmV_w2h8jl0QJmnmwV_cKIBkCpWSRbp5ws7D4wxw6eSIbVtUrIIRB6-BadCBge5xxnICs4h92A-8nuORQJGtW9MQvvk_IGH0fY3Yx"
@@ -32,7 +32,7 @@ class ViewModelClass : ViewModel() {
 
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
-        val call = yelpService.searchRestaurants("Bearer $API_KEY",
+        val call = yelpService.getRestaurantsResults("Bearer $API_KEY",
             restaurantNameInput,
             categoryInput,
             locationInput)

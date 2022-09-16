@@ -1,4 +1,4 @@
-package com.mainApp.yelp_mini
+package com.mainApp.yelp_mini.searchScreen
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,9 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.databinding.ActivitySearchHomeBinding
-import com.mainApp.yelp_mini.resultsScreen.MainActivity
+import com.mainApp.yelp_mini.resultsScreen.ResultsActivity
 
 
 class SearchHome : AppCompatActivity() {
@@ -43,7 +44,7 @@ class SearchHome : AppCompatActivity() {
             restaurantNameTextInput = restaurantNameInput.text.toString()
 
 
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, ResultsActivity::class.java)
 
             val extras = Bundle()
             extras.putString("categoryTextInput", categoryTextInput)

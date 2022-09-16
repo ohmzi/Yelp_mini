@@ -15,51 +15,48 @@ data class YelpSearchResult(
         @SerializedName("review_count") val numReviews: Int,
         val distance: Double,
         @SerializedName("image_url") val imageUrl: String,
-        val categories: List<YelpCategory>,
-        val location: YelpLocation,
+        val categories: List<RestaurantCategory>,
+        val location: RestaurantLocation,
     )
 }
 
-data class YelpBusinessDetail(
+data class YelpRestaurantDetail(
     val name: String,
     @SerializedName("image_url") val imageUrl: String,
-    @SerializedName("is_claimed") val isClaimed: String,
-    @SerializedName("is_closed") val isClosed: String,
     val url: String,
     @SerializedName("display_phone") val phone: String,
     @SerializedName("review_count") val numReviews: Int,
-    val categories: List<YelpCategory>,
+    val categories: List<RestaurantCategory>,
     val rating: Double,
-    val location: YelpLocation,
+    val location: RestaurantLocation,
     val photos: List<String>,
     val price: String,
-    // hours
     val transactions: List<String>,
 )
 
-data class YelpCategory(
+data class RestaurantCategory(
     val title: String,
 )
 
-data class YelpLocation(
+data class RestaurantLocation(
     @SerializedName("address1") val address: String,
 )
 
-data class YelpReviews(
-    val reviews: List<YelpReview>,
+data class YelpRestaurantReviews(
+    val reviews: List<RestaurantReview>,
     val total: Int,
 )
 
-data class YelpReview(
+data class RestaurantReview(
     val id: String,
     val rating: Double,
-    val user: YelpUser,
+    val user: UsersFromReviews,
     val text: String,
     @SerializedName("time_created") val timestamp: String,
     val url: String,
 )
 
-data class YelpUser(
+data class UsersFromReviews(
     val id: String,
     @SerializedName("profile_url") val profileUrl: String,
     @SerializedName("image_url") val imageUrl: String,

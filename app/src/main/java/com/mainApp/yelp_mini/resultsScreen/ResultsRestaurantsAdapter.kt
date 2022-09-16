@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.item_restaurant.view.*
 import kotlin.math.roundToInt
 
 
-class RestaurantsAdapter(val activity: Activity) :
-    RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
+class ResultsRestaurantsAdapter(val activity: Activity) :
+    RecyclerView.Adapter<ResultsRestaurantsAdapter.ViewHolder>() {
 
 
     private var restaurantsList: List<YelpSearchResult.YelpRestaurant>? = null
