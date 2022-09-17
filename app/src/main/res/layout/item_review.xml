@@ -14,7 +14,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Mel K." />
+        tools:text="James Don" />
 
     <TextView
         android:id="@+id/tvReviewDate"
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toEndOf="@+id/rbReview"
         app:layout_constraintBottom_toBottomOf="@+id/rbReview"
         tools:layout_editor_absoluteY="34dp"
-        tools:text="2016-08-29 00:41:13" />
+        tools:text="2022-09-12 12:22:31" />
 
     <RatingBar
         android:id="@+id/rbReview"
@@ -46,6 +46,6 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@+id/tvReviewName"
         app:layout_constraintTop_toBottomOf="@+id/rbReview"
-        tools:text="Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier..." />
+        tools:text="Best coffee in town." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

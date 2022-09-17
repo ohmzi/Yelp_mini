@@ -38,7 +38,7 @@
         android:progressTint="#FF5722"
         android:layout_marginTop="4dp"
         android:numStars="5"
-        android:rating="4.5"
+        android:rating="4"
         android:stepSize="0.5"
         app:layout_constraintStart_toStartOf="@+id/tvName"
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
@@ -51,7 +51,7 @@
         android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
         app:layout_constraintStart_toEndOf="@+id/ratingBar"
-        tools:text="321 Reviews" />
+        tools:text="5 Reviews" />
 
     <TextView
         android:id="@+id/tvAddress"
@@ -60,7 +60,7 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="@+id/tvName"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar"
-        tools:text="41 Kenmare St" />
+        tools:text="8080 boulevard Champlain" />
 
     <TextView
         android:id="@+id/tvCategory"
@@ -70,7 +70,7 @@
         android:textColor="@android:color/darker_gray"
         app:layout_constraintStart_toStartOf="@+id/tvName"
         app:layout_constraintTop_toBottomOf="@+id/tvAddress"
-        tools:text="Breakfast" />
+        tools:text="coffee" />
 
     <TextView
         android:id="@+id/tvDistance"
@@ -79,7 +79,7 @@
         android:textColor="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="1.7 mi" />
+        tools:text="2 km" />
 
     <TextView
         android:id="@+id/tvPrice"
@@ -89,5 +89,5 @@
         android:textColor="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="@+id/tvDistance"
         app:layout_constraintTop_toBottomOf="@+id/tvDistance"
-        tools:text="$$" />
+        tools:text="$" />
 </androidx.constraintlayout.widget.ConstraintLayout>
