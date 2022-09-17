@@ -15,7 +15,7 @@ import java.util.*
 private const val TAG = "RestaurantsAdapter"
 
 class DetailReviewAdapter(
-    val context: Context,
+    private val context: Context,
     private val reviews: List<RestaurantReview>,
 ) : RecyclerView.Adapter<DetailReviewAdapter.ViewHolder>() {
 

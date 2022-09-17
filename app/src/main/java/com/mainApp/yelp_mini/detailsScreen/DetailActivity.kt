@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
@@ -14,20 +16,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import com.mainApp.yelp_mini.R
-import com.mainApp.yelp_mini.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.data.RestaurantReview
-import com.mainApp.yelp_mini.data.YelpRestaurantReviews
+import com.mainApp.yelp_mini.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.fragments.MyFragmentPagerAdapter
 import com.mainApp.yelp_mini.fragments.OverviewFragment
 import com.mainApp.yelp_mini.fragments.ReviewsFragment
-import com.mainApp.yelp_mini.retro_services.RetroInstance
-import com.mainApp.yelp_mini.retro_services.YelpService
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.fragment_restaurant_overview.*
 import kotlinx.android.synthetic.main.fragment_restaurant_reviews.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 private const val TAG = "DetailActivityAPICALL"
@@ -61,8 +57,42 @@ class DetailActivity : AppCompatActivity() {
         val tabLayout = findViewById<View>(R.id.sliding_tabs) as TabLayout
         tabLayout.setupWithViewPager(viewPager)
 
-        restaurantDetailAPICall()
-        restaurantReviewAPICall()
+        val detailViewModelClass: DetailViewModelClass =
+            ViewModelProvider(this)[DetailViewModelClass::class.java]
+
+        detailViewModelClass.getRestaurantsDetailLists().observe(this) {
+            if (it.name.isEmpty()) {
+                Log.d("Blankresult", "Error in getting list")
+                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.d("BlankresultNot", "$it.restaurants")
+
+                // recyclerAdapter.setRestaurantsList(it)
+                //     recyclerAdapter.notifyDataSetChanged()
+                bindInfo(it)
+                supportActionBar!!.title = it.name
+
+            }
+        }
+        detailViewModelClass.getRestaurantsReviewLists().observe(this) {
+            if (it.reviews.isEmpty()) {
+                Log.d("Blankresult", "Error in getting list")
+                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+            } else {
+                Log.d("BlankresultNot", "$it.restaurants")
+
+                // recyclerAdapter.setRestaurantsList(it)
+                //     recyclerAdapter.notifyDataSetChanged()
+                bindReviews()
+                reviews.addAll(it.reviews)
+            }
+        }
+
+
+        detailViewModelClass.restaurantDetailAPICall(restaurantID)
+        detailViewModelClass.restaurantReviewAPICall(restaurantID)
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -70,60 +100,8 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
 
-    private fun restaurantDetailAPICall() {
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val photos = mutableListOf<String>()
-        val retroInstance = RetroInstance.getRetroInstance()
-        val yelpService = retroInstance.create(YelpService::class.java)
-        val call = yelpService.getRestaurantsDetails("Bearer $API_KEY", restaurantID)
-
-        call.enqueue(object : Callback<YelpRestaurantDetail> {
-            override fun onResponse(
-                call: Call<YelpRestaurantDetail>,
-                response: Response<YelpRestaurantDetail>,
-            ) {
-                Log.i(TAG, "onResponse $response")
-                val body = response.body()
-                if (body == null) {
-                    Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
-                    return
-                }
-                Log.w(TAG, body.transactions.toString())
-                supportActionBar!!.title = body.name
-                photos.addAll(body.photos)
-                bindInfo(body)
-            }
-            override fun onFailure(call: Call<YelpRestaurantDetail>, t: Throwable) {
-                Log.i(TAG, "onFailure $t")
-            }
-        })
-    }
-
-    private fun restaurantReviewAPICall() {
-        val retroInstance = RetroInstance.getRetroInstance()
-        val yelpService = retroInstance.create(YelpService::class.java)
-        val call = yelpService.getRestaurantsReviews("Bearer $API_KEY", restaurantID)
 
 
-        call.enqueue(object : Callback<YelpRestaurantReviews> {
-            override fun onResponse(
-                call: Call<YelpRestaurantReviews>,
-                response: Response<YelpRestaurantReviews>,
-            ) {
-                Log.i(TAG, "onResponse $response")
-                val body = response.body()
-                if (body == null) {
-                    Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
-                    return
-                }
-                bindReviews()
-                reviews.addAll(body.reviews)
-            }
-            override fun onFailure(call: Call<YelpRestaurantReviews>, t: Throwable) {
-                Log.i(TAG, "onFailure $t")
-            }
-        })
-    }
 
 
     @SuppressLint("SetTextI18n")
