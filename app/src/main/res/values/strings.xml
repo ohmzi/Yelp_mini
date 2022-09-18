@@ -3,5 +3,6 @@
     <string name="title_activity_search_home">Search Home</string>
     <!-- Strings used for fragments for navigation -->
     <string name="previous">Previous</string>
+    <string name="lostImage">when results arent populated</string>
 
 </resources>
