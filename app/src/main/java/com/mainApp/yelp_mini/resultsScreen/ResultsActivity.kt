@@ -48,6 +48,7 @@ class ResultsActivity : AppCompatActivity() {
         resultsViewModelClass.getLiveDataObserver().observe(this) {
             if (((it.total) == 0)) {
                 Log.d(TAG, "BlankResult, Error in getting list tostring ${it.toString()}")
+                binding.shimmerView.visibility = View.INVISIBLE
                 imageViewLost.visibility = View.VISIBLE
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             } else {
@@ -68,7 +69,6 @@ class ResultsActivity : AppCompatActivity() {
     private fun shimmer() {
         binding.shimmerView.startShimmer()
         rvRestaurants.visibility = View.INVISIBLE
-        binding.shimmerView.visibility = View.VISIBLE
         Handler(Looper.getMainLooper()).postDelayed({
             rvRestaurants.visibility = View.VISIBLE
             binding.shimmerView.stopShimmer()
