@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/imageViewBusinessDetail"
         android:layout_width="match_parent"
-        android:layout_height="275dp"
+        android:layout_height="262dp"
         android:rotationX="360"
         app:layout_constraintEnd_toEndOf="parent"
 

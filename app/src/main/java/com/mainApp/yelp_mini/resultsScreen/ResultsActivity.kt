@@ -3,6 +3,8 @@ package com.mainApp.yelp_mini.resultsScreen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -21,8 +23,10 @@ class ResultsActivity : AppCompatActivity() {
     private lateinit var restaurantNameTextInput: String
     private val TAG = "ResultsActivity"
 
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.title = "Yelp Results"
@@ -32,20 +36,20 @@ class ResultsActivity : AppCompatActivity() {
             locationTextInput = extras.getString("locationTextInput") as String
             restaurantNameTextInput = extras.getString("restaurantNameTextInput") as String
         }
-
         binding = ActivityResultBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-
         binding.rvRestaurants.layoutManager = LinearLayoutManager(this)
         binding.rvRestaurants.adapter = recyclerAdapter
+        binding.shimmerView.startShimmer()
+        shimmer()
 
         val resultsViewModelClass: ResultsViewModelClass =
             ViewModelProvider(this)[ResultsViewModelClass::class.java]
         resultsViewModelClass.getLiveDataObserver().observe(this) {
             if (((it.total) == 0)) {
                 Log.d(TAG, "BlankResult, Error in getting list tostring ${it.toString()}")
+                binding.shimmerView.visibility = View.INVISIBLE
                 imageViewLost.visibility = View.VISIBLE
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             } else {
@@ -56,7 +60,18 @@ class ResultsActivity : AppCompatActivity() {
             Log.w(TAG, "END OF CALL,(it.total) ${it.total}")
 
         }
-        resultsViewModelClass.makeAPICall(categoryTextInput, locationTextInput, restaurantNameTextInput)
+        resultsViewModelClass.makeAPICall(categoryTextInput,
+            locationTextInput,
+            restaurantNameTextInput)
+    }
+
+    private fun shimmer() {
+        rvRestaurants.visibility = View.INVISIBLE
+        Handler(Looper.getMainLooper()).postDelayed({
+            rvRestaurants.visibility = View.VISIBLE
+            binding.shimmerView.stopShimmer()
+            binding.shimmerView.visibility = View.INVISIBLE
+        }, 4000)
     }
 
     override fun onSupportNavigateUp(): Boolean {
