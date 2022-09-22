@@ -41,8 +41,7 @@ class ResultsActivity : AppCompatActivity() {
         setContentView(view)
         binding.rvRestaurants.layoutManager = LinearLayoutManager(this)
         binding.rvRestaurants.adapter = recyclerAdapter
-        binding.shimmerView.startShimmer()
-        shimmer()
+
 
         val resultsViewModelClass: ResultsViewModelClass =
             ViewModelProvider(this)[ResultsViewModelClass::class.java]
@@ -62,9 +61,12 @@ class ResultsActivity : AppCompatActivity() {
         resultsViewModelClass.makeAPICall(categoryTextInput,
             locationTextInput,
             restaurantNameTextInput)
+        shimmer()
+
     }
 
     private fun shimmer() {
+        binding.shimmerView.startShimmer()
         rvRestaurants.visibility = View.INVISIBLE
         binding.shimmerView.visibility = View.VISIBLE
         Handler(Looper.getMainLooper()).postDelayed({

@@ -19,8 +19,6 @@
         app:layout_constraintEnd_toStartOf="@+id/tvDistance"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
-
-
         />
 
     <ImageView
