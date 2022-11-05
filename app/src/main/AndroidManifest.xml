@@ -16,18 +16,19 @@
         android:theme="@style/Theme.Yelp_mini"
         tools:targetApi="31">
         <activity
-            android:name=".resultsScreen.ResultsActivity"
+            android:name=".view.activity.ResultsActivity"
             android:exported="true"/>
         <activity
-            android:name=".detailsScreen.DetailActivity"
+            android:name=".view.activity.DetailActivity"
             android:exported="true" />
         <activity
             android:name=".searchScreen.SearchHome"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"
-                android:label="@string/title_activity_search_home"
-                android:theme="@style/Theme.Yelp_mini.NoActionBar" />
+                <action
+                    android:name="android.intent.action.MAIN"
+                    android:label="@string/title_activity_search_home"
+                    android:theme="@style/Theme.Yelp_mini.NoActionBar" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
