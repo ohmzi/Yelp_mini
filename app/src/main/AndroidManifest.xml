@@ -22,7 +22,7 @@
             android:name=".view.activity.DetailActivity"
             android:exported="true" />
         <activity
-            android:name=".searchScreen.SearchHome"
+            android:name=".view.activity.SearchHome"
             android:exported="true">
             <intent-filter>
                 <action
