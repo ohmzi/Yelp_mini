@@ -1,5 +1,6 @@
-package com.mainApp.yelp_mini.model.retro_services
+package com.mainApp.yelp_mini.model.retroServices
 
+import com.mainApp.yelp_mini.model.util.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

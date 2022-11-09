@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.model.data.YelpRestaurantReviews
-import com.mainApp.yelp_mini.model.retro_services.API_KEY
-import com.mainApp.yelp_mini.model.retro_services.RetroInstance
-import com.mainApp.yelp_mini.model.retro_services.YelpService
+import com.mainApp.yelp_mini.model.retroServices.RetroInstance
+import com.mainApp.yelp_mini.model.retroServices.YelpService
+import com.mainApp.yelp_mini.model.util.API_KEY
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

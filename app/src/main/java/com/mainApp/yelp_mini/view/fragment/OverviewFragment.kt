@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment
 import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.databinding.FragmentRestaurantOverviewBinding
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
-import com.mainApp.yelp_mini.view.activity.DetailActivity
 import java.util.*
+
 private const val TAG = "OverviewFragment"
 
 class OverviewFragment(
-    private val context: DetailActivity,
     val reviews: YelpRestaurantDetail,
 ) : Fragment(R.layout.fragment_restaurant_overview) {
 
@@ -35,20 +34,21 @@ class OverviewFragment(
                 CenterCrop(), RoundedCorners(20)
             )).into(binding.imageViewBusinessDetail)
 */
-        binding.tvName.text = body.name
-        binding.ratingBar.rating = body.rating.toFloat()
-        binding.tvNumReviews.text = "${body.numReviews} Reviews"
-        binding.tvPrice.text = price
-        binding.tvCategory.text = body.categories.joinToString { c -> c.title }
-        binding.tvAddress.text = "Address: ${body.location.address}"
-        binding.tvPhone.text = "Call: ${body.phone}"
-        binding.tvTransactions.text =
-            body.transactions.joinToString { t ->
-                t.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        with(binding) {
+            tvName.text = body.name
+            ratingBar.rating = body.rating.toFloat()
+            tvNumReviews.text = "${body.numReviews} Reviews"
+            tvPrice.text = price
+            tvCategory.text = body.categories.joinToString { c -> c.title }
+            tvAddress.text = "Address: ${body.location.address}"
+            tvPhone.text = "Call: ${body.phone}"
+            tvTransactions.text =
+                body.transactions.joinToString { t ->
+                    t.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                    }
                 }
-            }
 
-
+        }
     }
 }

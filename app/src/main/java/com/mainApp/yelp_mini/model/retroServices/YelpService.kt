@@ -1,4 +1,4 @@
-package com.mainApp.yelp_mini.model.retro_services
+package com.mainApp.yelp_mini.model.retroServices
 
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.model.data.YelpRestaurantReviews

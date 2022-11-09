@@ -1,6 +1,5 @@
 package com.mainApp.yelp_mini.view.adapter
 
-import android.content.Context
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -8,7 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 
 private const val TAG = "MyFragmentPagerAdapter"
 
-class MyFragmentPagerAdapter(fragmentManager: FragmentManager, private val context: Context) :
+class MyFragmentPagerAdapter(fragmentManager: FragmentManager) :
     FragmentStatePagerAdapter(fragmentManager) {
 
     private val tabs = mutableListOf<Fragment>()

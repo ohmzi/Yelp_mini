@@ -1,13 +1,12 @@
 package com.mainApp.yelp_mini.view.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mainApp.yelp_mini.R
+import com.mainApp.yelp_mini.databinding.ItemReviewBinding
 import com.mainApp.yelp_mini.model.data.RestaurantReview
-import kotlinx.android.synthetic.main.item_review.view.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,7 +19,8 @@ class DetailReviewAdapter(
 ) : RecyclerView.Adapter<DetailReviewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_review, parent, false))
+        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context))
+        return ViewHolder(binding)
     }
 
     override fun getItemCount() = reviews.size
@@ -29,29 +29,26 @@ class DetailReviewAdapter(
         holder.bind(reviews[position])
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(private val binding: ItemReviewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SimpleDateFormat")
         fun bind(review: RestaurantReview) {
-            itemView.tvReviewName.text = review.user.name
-            itemView.rbReview.rating = review.rating.toFloat()
 
             val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            var date: Date = Date()
-            try {
-                date = format.parse(review.timestamp)
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
 
             val dateFormat = SimpleDateFormat("EEE, M/d/yy 'at' h:mm a")
             var dateTime = review.timestamp
             try {
-                dateTime = dateFormat.format(date)
+                dateTime = dateFormat.format(format.parse(review.timestamp) as Date)
             } catch (e: ParseException) {
                 e.printStackTrace()
             }
-
-            itemView.tvReviewDate.text = dateTime
-            itemView.tvReviewText.text = review.text
+            with(binding) {
+                tvReviewName.text = review.user.name
+                rbReview.rating = review.rating.toFloat()
+                tvReviewDate.text = dateTime
+                tvReviewText.text = review.text
+            }
         }
     }
 }

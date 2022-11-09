@@ -1,7 +1,6 @@
 package com.mainApp.yelp_mini.view.activity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -9,8 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.tabs.TabLayout
-import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.databinding.ActivityDetailBinding
 import com.mainApp.yelp_mini.model.data.RestaurantReview
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
@@ -18,6 +15,7 @@ import com.mainApp.yelp_mini.view.adapter.MyFragmentPagerAdapter
 import com.mainApp.yelp_mini.view.fragment.OverviewFragment
 import com.mainApp.yelp_mini.view.fragment.ReviewsFragment
 import com.mainApp.yelp_mini.viewModel.DetailViewModelClass
+
 private const val TAG = "DetailActivityAPICALL"
 
 
@@ -31,7 +29,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val extras = intent.extras
         if (extras != null) {
@@ -39,11 +37,11 @@ class DetailActivity : AppCompatActivity() {
         }
 
         val viewPager = binding.viewpager
-        val pagerAdapter = MyFragmentPagerAdapter(supportFragmentManager, this)
+        val pagerAdapter = MyFragmentPagerAdapter(supportFragmentManager)
         viewPager.adapter = pagerAdapter
 
 
-        val tabLayout = findViewById<View>(R.id.sliding_tabs) as TabLayout
+        val tabLayout = binding.slidingTabs
         tabLayout.setupWithViewPager(viewPager)
         val detailViewModelClass: DetailViewModelClass =
             ViewModelProvider(this)[DetailViewModelClass::class.java]
@@ -54,11 +52,11 @@ class DetailActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             } else {
                 Log.d(TAG, "Restaurant Detail for $it.restaurants")
-                pagerAdapter.addFragment(OverviewFragment(this, it), "Overview")
-                //   pagerAdapter.getItem(0)
+                pagerAdapter.addFragment(OverviewFragment(it), "Overview")
+                //pagerAdapter.getItem(0)
                 pagerAdapter.notifyDataSetChanged()
                 bindBusinessPicture(it)
-                supportActionBar!!.title = it.name
+                supportActionBar?.title = it.name
             }
         }
 
@@ -70,12 +68,16 @@ class DetailActivity : AppCompatActivity() {
                 Log.d(TAG, "Restaurant Review for $it.restaurants")
                 reviews.addAll(it.reviews)
                 pagerAdapter.addFragment(ReviewsFragment(this, reviews), "Reviews")
-                //  pagerAdapter.getItem(1)
+                //pagerAdapter.getItem(1)
                 pagerAdapter.notifyDataSetChanged()
             }
         }
-        detailViewModelClass.restaurantDetailAPICall(restaurantID)
-        detailViewModelClass.restaurantReviewAPICall(restaurantID)
+        if (restaurantID != null) {
+            detailViewModelClass.restaurantDetailAPICall(restaurantID)
+            detailViewModelClass.restaurantReviewAPICall(restaurantID)
+        } else {
+            Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
