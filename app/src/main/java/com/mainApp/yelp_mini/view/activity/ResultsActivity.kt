@@ -49,6 +49,11 @@ class ResultsActivity : AppCompatActivity() {
 
         val resultsViewModelClass: ResultsViewModelClass =
             ViewModelProvider(this)[ResultsViewModelClass::class.java]
+
+        resultsViewModelClass.makeAPICall(categoryTextInput,
+            locationTextInput,
+            restaurantNameTextInput)
+
         resultsViewModelClass.getLiveDataObserver().observe(this) {
             if (((it.total) == 0)) {
                 Log.d(TAG, "BlankResult, Error in getting list tostring $it")
@@ -63,9 +68,6 @@ class ResultsActivity : AppCompatActivity() {
             Log.w(TAG, "END OF CALL,(it.total) ${it.total}")
 
         }
-        resultsViewModelClass.makeAPICall(categoryTextInput,
-            locationTextInput,
-            restaurantNameTextInput)
     }
 
     private fun shimmer() {

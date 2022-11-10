@@ -1,20 +1,15 @@
 package com.mainApp.yelp_mini.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.model.data.YelpRestaurantReviews
-import com.mainApp.yelp_mini.model.retroServices.RetroInstance
-import com.mainApp.yelp_mini.model.retroServices.YelpService
-import com.mainApp.yelp_mini.model.util.API_KEY
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.mainApp.yelp_mini.model.repo.RepoClass
 
-private const val TAG = "DetailActivityAPICALL"
+private const val TAG = "DetailViewModelClass"
 
 class DetailViewModelClass : ViewModel() {
+    private val repoClass by lazy { RepoClass() }
 
     val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail> = MutableLiveData()
     val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews> = MutableLiveData()
@@ -28,6 +23,13 @@ class DetailViewModelClass : ViewModel() {
         return restaurantsReviewList
     }
 
+
+    fun restaurantDetailAPICall(restaurantID: String) {
+        repoClass.getRestaurantDetail(restaurantID)
+
+    }
+
+    /*
     fun restaurantDetailAPICall(restaurantID: String) {
         val photos = mutableListOf<String>()
         val retroInstance = RetroInstance.getRetroInstance()
@@ -57,9 +59,14 @@ class DetailViewModelClass : ViewModel() {
             }
         })
     }
+    */
 
 
     fun restaurantReviewAPICall(restaurantID: String) {
+        repoClass.getRestaurantReview(restaurantID)
+    }
+
+    /*fun restaurantReviewAPICall(restaurantID: String) {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsReviews("Bearer $API_KEY", restaurantID)
@@ -87,4 +94,5 @@ class DetailViewModelClass : ViewModel() {
             }
         })
     }
+    */
 }
