@@ -17,12 +17,11 @@ private const val TAG = "APIClass"
 
 class APIClass {
 
-    val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail> = MutableLiveData()
-    val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()
-    val restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
+    private val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail> = MutableLiveData()
+    private val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews> = MutableLiveData()
+    private val restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
 
-
-    fun restaurantReviewAPICall(restaurantID: String) {
+    fun restaurantReviewAPICall(restaurantID: String): MutableLiveData<YelpRestaurantReviews> {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsReviews("Bearer $API_KEY", restaurantID)
@@ -50,10 +49,10 @@ class APIClass {
                 Log.i(TAG, "onFailure $t")
             }
         })
+        return restaurantsReviewList
     }
 
-
-    fun restaurantDetailAPICall(restaurantID: String) {
+    fun restaurantDetailAPICall(restaurantID: String): MutableLiveData<YelpRestaurantDetail> {
         val photos = mutableListOf<String>()
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
@@ -65,7 +64,7 @@ class APIClass {
                 call: Call<YelpRestaurantDetail>,
                 response: Response<YelpRestaurantDetail>,
             ) {
-                Log.i("$TAG RestaurantDetailAPICall", "onResponse $response")
+                response.body()?.let { Log.i("$TAG RestaurantDetailAPICall", it.name) }
                 val body = response.body()
                 if (body == null) {
                     Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
@@ -82,20 +81,20 @@ class APIClass {
                 Log.i(TAG, "onFailure $t")
             }
         })
+        return restaurantsDetailList
     }
 
     fun restaurantResultAPICall(
         categoryInput: String,
         locationInput: String,
         restaurantNameInput: String,
-    ) {
+    ): MutableLiveData<YelpSearchResult> {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsResults("Bearer $API_KEY",
             restaurantNameInput,
             categoryInput,
             locationInput)
-
 
         call.enqueue(
             object :
@@ -118,7 +117,6 @@ class APIClass {
                             "restaurants.value?.total, ${restaurants.value?.total} , Did not receive valid response body from Yelp API... exiting"
                         )
                         return
-
                     } else {
                         Log.w(
                             TAG,
@@ -126,16 +124,18 @@ class APIClass {
                         )
                         restaurants.postValue(body)//since this is in else statement when null is not possible, the nullable value is not getting sent.
                         Log.w(TAG, "onResponse $body")
-
                     }
-
                 }
 
                 override fun onFailure(call: Call<YelpSearchResult>, t: Throwable) {
                     Log.i(TAG, "onFailure $t")
                 }
             })
+        return restaurants
 
     }
 
 }
+
+
+//return the resturant list

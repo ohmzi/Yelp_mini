@@ -9,10 +9,8 @@ import com.mainApp.yelp_mini.model.repo.RepoClass
 
 open class ResultsViewModelClass : ViewModel() {
     private val TAG = "ResultsViewModelClass"
-
-    val restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
+    private var restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
     private val repoClass by lazy { RepoClass() }
-
 
     fun getLiveDataObserver(): MutableLiveData<YelpSearchResult> {
         return restaurants
@@ -20,13 +18,13 @@ open class ResultsViewModelClass : ViewModel() {
 
     @SuppressLint("LongLogTag")
     fun makeAPICall(categoryInput: String, locationInput: String, restaurantNameInput: String) {
-        repoClass.getRestaurantResult(categoryInput, locationInput, restaurantNameInput)
+        restaurants =
+            repoClass.getRestaurantResult(categoryInput, locationInput, restaurantNameInput)
         Log.w("$TAG makeAPICall", repoClass.toString())
 
     }
-
-
-/* fun makeAPICall(categoryInput: String, locationInput: String, restaurantNameInput: String) {
+    /*
+ fun makeAPICall(categoryInput: String, locationInput: String, restaurantNameInput: String) {
      val retroInstance = RetroInstance.getRetroInstance()
      val yelpService = retroInstance.create(YelpService::class.java)
      val call = yelpService.getRestaurantsResults("Bearer $API_KEY",
@@ -62,15 +60,14 @@ open class ResultsViewModelClass : ViewModel() {
                      )
                      restaurants.postValue(body)//since this is in else statement when null is not possible, the nullable value is not getting sent.
                      Log.w(TAG, "onResponse $body")
-
                  }
-
              }
+
 
              override fun onFailure(call: Call<YelpSearchResult>, t: Throwable) {
                  Log.i(TAG, "onFailure $t")
              }
          })
 
- }*/
+} */
 }
