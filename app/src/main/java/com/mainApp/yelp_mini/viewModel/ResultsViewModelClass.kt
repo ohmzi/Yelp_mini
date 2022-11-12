@@ -6,13 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mainApp.yelp_mini.model.data.YelpSearchResult
 import com.mainApp.yelp_mini.model.repo.RepoClass
+private const val TAG = "ResultsViewModelClass"
 
 open class ResultsViewModelClass : ViewModel() {
-    private val TAG = "ResultsViewModelClass"
-    private var restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
+    private var restaurants: MutableLiveData<YelpSearchResult?> = MutableLiveData()
     private val repoClass by lazy { RepoClass() }
 
-    fun getLiveDataObserver(): MutableLiveData<YelpSearchResult> {
+    fun getRestaurantsResultLists(): MutableLiveData<YelpSearchResult?> {
         return restaurants
     }
 

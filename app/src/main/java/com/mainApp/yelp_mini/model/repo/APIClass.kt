@@ -17,11 +17,11 @@ private const val TAG = "APIClass"
 
 class APIClass {
 
-    private val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail> = MutableLiveData()
-    private val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews> = MutableLiveData()
-    private val restaurants: MutableLiveData<YelpSearchResult> = MutableLiveData()
+    private val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail?> = MutableLiveData()
+    private val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()
+    private val restaurants: MutableLiveData<YelpSearchResult?> = MutableLiveData()
 
-    fun restaurantReviewAPICall(restaurantID: String): MutableLiveData<YelpRestaurantReviews> {
+    fun restaurantReviewAPICall(restaurantID: String): MutableLiveData<YelpRestaurantReviews?> {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsReviews("Bearer $API_KEY", restaurantID)
@@ -52,19 +52,18 @@ class APIClass {
         return restaurantsReviewList
     }
 
-    fun restaurantDetailAPICall(restaurantID: String): MutableLiveData<YelpRestaurantDetail> {
+    fun restaurantDetailAPICall(restaurantID: String): MutableLiveData<YelpRestaurantDetail?> {
         val photos = mutableListOf<String>()
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsDetails("Bearer $API_KEY", restaurantID)
 
         call.enqueue(object : Callback<YelpRestaurantDetail> {
-            @SuppressLint("LongLogTag")
             override fun onResponse(
                 call: Call<YelpRestaurantDetail>,
                 response: Response<YelpRestaurantDetail>,
             ) {
-                response.body()?.let { Log.i("$TAG RestaurantDetailAPICall", it.name) }
+                Log.i(TAG, "onResponse $response")
                 val body = response.body()
                 if (body == null) {
                     Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
@@ -88,7 +87,7 @@ class APIClass {
         categoryInput: String,
         locationInput: String,
         restaurantNameInput: String,
-    ): MutableLiveData<YelpSearchResult> {
+    ): MutableLiveData<YelpSearchResult?> {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsResults("Bearer $API_KEY",

@@ -1,5 +1,6 @@
 package com.mainApp.yelp_mini.view.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,11 +8,13 @@ import androidx.fragment.app.Fragment
 import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.databinding.FragmentRestaurantOverviewBinding
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
+import com.mainApp.yelp_mini.view.activity.DetailActivity
 import java.util.*
 
 private const val TAG = "OverviewFragment"
 
 class OverviewFragment(
+    val activty: DetailActivity,
     val reviews: YelpRestaurantDetail,
 ) : Fragment(R.layout.fragment_restaurant_overview) {
 
@@ -23,6 +26,7 @@ class OverviewFragment(
         bindInfo(reviews)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindInfo(body: YelpRestaurantDetail) {
         var price = body.price
         if (price == null) {

@@ -10,15 +10,15 @@ private const val TAG = "DetailViewModelClass"
 
 class DetailViewModelClass : ViewModel() {
     private val repoClass by lazy { RepoClass() }
-    private var restaurantsDetailList: MutableLiveData<YelpRestaurantDetail> = MutableLiveData()
-    private var restaurantsReviewList: MutableLiveData<YelpRestaurantReviews> = MutableLiveData()
+    private var restaurantsDetailList: MutableLiveData<YelpRestaurantDetail?> = MutableLiveData()
+    private var restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()
 
 
-    fun getRestaurantsDetailLists(): MutableLiveData<YelpRestaurantDetail> {
+    fun getRestaurantsDetailLists(): MutableLiveData<YelpRestaurantDetail?> {
         return restaurantsDetailList
     }
 
-    fun getRestaurantsReviewLists(): MutableLiveData<YelpRestaurantReviews> {
+    fun getRestaurantsReviewLists(): MutableLiveData<YelpRestaurantReviews?> {
         return restaurantsReviewList
     }
 

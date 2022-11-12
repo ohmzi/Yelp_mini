@@ -54,19 +54,20 @@ class ResultsActivity : AppCompatActivity() {
             locationTextInput,
             restaurantNameTextInput)
 
-        resultsViewModelClass.getLiveDataObserver().observe(this) {
-            if (((it.total) == 0)) {
-                Log.d(TAG, "BlankResult, Error in getting list tostring $it")
-                binding.shimmerView.visibility = View.INVISIBLE
-                binding.imageViewLost.visibility = View.VISIBLE
-                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
-            } else {
-                Log.d(TAG, "NotBlankResult, $it.restaurants")
-                recyclerAdapter.setRestaurantsList(it.restaurants)
-                recyclerAdapter.notifyDataSetChanged()
-            }
-            Log.w(TAG, "END OF CALL,(it.total) ${it.total}")
+        resultsViewModelClass.getRestaurantsResultLists().observe(this) {
 
+            if (it != null) {
+                if (((it.total) == 0)) {
+                    Log.d(TAG, "BlankResult, Error in getting list tostring $it")
+                    binding.shimmerView.visibility = View.INVISIBLE
+                    binding.imageViewLost.visibility = View.VISIBLE
+                    Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.d(TAG, "NotBlankResult, $it.restaurants")
+                    recyclerAdapter.setRestaurantsList(it.restaurants)
+                    recyclerAdapter.notifyDataSetChanged()
+                }
+            }
         }
     }
 

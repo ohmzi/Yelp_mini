@@ -28,7 +28,6 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val extras = intent.extras
@@ -40,43 +39,49 @@ class DetailActivity : AppCompatActivity() {
         val pagerAdapter = MyFragmentPagerAdapter(supportFragmentManager)
         viewPager.adapter = pagerAdapter
 
-
         val tabLayout = binding.slidingTabs
         tabLayout.setupWithViewPager(viewPager)
         val detailViewModelClass: DetailViewModelClass =
             ViewModelProvider(this)[DetailViewModelClass::class.java]
 
-        detailViewModelClass.getRestaurantsDetailLists().observe(this) {
-            if (it.name.isEmpty()) {
-                Log.d(TAG, "Error in getting list for Restaurant Detail")
-                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
-            } else {
-                Log.d(TAG, "Restaurant Detail for $it.restaurants")
-                pagerAdapter.addFragment(OverviewFragment(it), "Overview")
-                //pagerAdapter.getItem(0)
-                pagerAdapter.notifyDataSetChanged()
-                bindBusinessPicture(it)
-                supportActionBar?.title = it.name
-            }
-        }
-
-        detailViewModelClass.getRestaurantsReviewLists().observe(this) {
-            if (it.reviews.isEmpty()) {
-                Log.d(TAG, "Error in getting list for Restaurant Review")
-                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
-            } else {
-                Log.d(TAG, "Restaurant Review for $it.restaurants")
-                reviews.addAll(it.reviews)
-                pagerAdapter.addFragment(ReviewsFragment(this, reviews), "Reviews")
-                //pagerAdapter.getItem(1)
-                pagerAdapter.notifyDataSetChanged()
-            }
-        }
         if (restaurantID != null) {
             detailViewModelClass.restaurantDetailAPICall(restaurantID)
             detailViewModelClass.restaurantReviewAPICall(restaurantID)
         } else {
             Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+        }
+
+        detailViewModelClass.getRestaurantsDetailLists().observe(this) {
+
+            if (it != null) {
+                if (it.name.isEmpty()) {
+                    Log.d("Blankresult", "Error in getting list")
+                    Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.d("BlankresultNot", "$it.restaurants")
+                    it.let { it1 -> OverviewFragment(this, it1) }
+                        .let { it2 -> pagerAdapter.addFragment(it2, "Overview") }
+                    pagerAdapter.notifyDataSetChanged()
+                    bindBusinessPicture(it)
+                    supportActionBar?.title = it.name
+
+                }
+            }
+        }
+
+        detailViewModelClass.getRestaurantsReviewLists().observe(this) {
+            if (it != null) {
+                if (it.reviews.isEmpty()) {
+                    Log.d("Blankresult", "Error in getting list")
+                    Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.d("BlankresultNot", "$it.restaurants")
+                    reviews.addAll(it.reviews)
+                    pagerAdapter.addFragment(ReviewsFragment(this, reviews), "Reviews")
+                    pagerAdapter.notifyDataSetChanged()
+
+                }
+            }
         }
     }
 
