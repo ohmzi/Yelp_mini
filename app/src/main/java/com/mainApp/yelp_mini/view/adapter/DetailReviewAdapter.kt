@@ -15,7 +15,7 @@ private const val TAG = "RestaurantsAdapter"
 
 class DetailReviewAdapter(
     private val context: Context,
-    private val reviews: MutableList<RestaurantReview>,
+    private val reviews: List<RestaurantReview>,
 ) : RecyclerView.Adapter<DetailReviewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

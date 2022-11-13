@@ -8,13 +8,11 @@ import androidx.fragment.app.Fragment
 import com.mainApp.yelp_mini.R
 import com.mainApp.yelp_mini.databinding.FragmentRestaurantOverviewBinding
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
-import com.mainApp.yelp_mini.view.activity.DetailActivity
 import java.util.*
 
 private const val TAG = "OverviewFragment"
 
 class OverviewFragment(
-    val activty: DetailActivity,
     val reviews: YelpRestaurantDetail,
 ) : Fragment(R.layout.fragment_restaurant_overview) {
 

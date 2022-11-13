@@ -9,7 +9,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.mainApp.yelp_mini.databinding.ActivityDetailBinding
-import com.mainApp.yelp_mini.model.data.RestaurantReview
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.view.adapter.MyFragmentPagerAdapter
 import com.mainApp.yelp_mini.view.fragment.OverviewFragment
@@ -21,7 +20,6 @@ private const val TAG = "DetailActivityAPICALL"
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var restaurantID: String
-    val reviews = mutableListOf<RestaurantReview>()
     private lateinit var binding: ActivityDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -59,7 +57,7 @@ class DetailActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.d("BlankresultNot", "$it.restaurants")
-                    it.let { it1 -> OverviewFragment(this, it1) }
+                    OverviewFragment(it)
                         .let { it2 -> pagerAdapter.addFragment(it2, "Overview") }
                     pagerAdapter.notifyDataSetChanged()
                     bindBusinessPicture(it)
@@ -76,8 +74,7 @@ class DetailActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
                 } else {
                     Log.d("BlankresultNot", "$it.restaurants")
-                    reviews.addAll(it.reviews)
-                    pagerAdapter.addFragment(ReviewsFragment(this, reviews), "Reviews")
+                    pagerAdapter.addFragment(ReviewsFragment(this, it.reviews), "Reviews")
                     pagerAdapter.notifyDataSetChanged()
 
                 }
