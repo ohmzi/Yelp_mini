@@ -3,8 +3,6 @@ package com.mainApp.yelp_mini.view.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -44,7 +42,8 @@ class ResultsActivity : AppCompatActivity() {
         with(binding) {
             rvRestaurants.layoutManager = LinearLayoutManager(this@ResultsActivity)
             rvRestaurants.adapter = recyclerAdapter
-            shimmer()
+            shimmerView.startShimmer()
+            rvRestaurants.visibility = View.VISIBLE
         }
 
         val resultsViewModelClass: ResultsViewModelClass =
@@ -59,29 +58,21 @@ class ResultsActivity : AppCompatActivity() {
             if (it != null) {
                 if (((it.total) == 0)) {
                     Log.d(TAG, "BlankResult, Error in getting list tostring $it")
-                    binding.shimmerView.visibility = View.INVISIBLE
-                    binding.imageViewLost.visibility = View.VISIBLE
+                    with(binding) {
+                        shimmerView.stopShimmer()
+                        shimmerView.visibility = View.INVISIBLE
+                        imageViewLost.visibility = View.VISIBLE
+                    }
                     Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
                 } else {
+                    binding.shimmerView.stopShimmer()
+                    binding.shimmerView.visibility = View.INVISIBLE
                     Log.d(TAG, "NotBlankResult, $it.restaurants")
                     recyclerAdapter.setRestaurantsList(it.restaurants)
                     recyclerAdapter.notifyDataSetChanged()
                 }
             }
         }
-    }
-
-    private fun shimmer() {
-        binding.rvRestaurants.visibility = View.INVISIBLE
-        Handler(Looper.getMainLooper()).postDelayed({
-            with(binding) {
-                shimmerView.startShimmer()
-                rvRestaurants.visibility = View.VISIBLE
-                shimmerView.stopShimmer()
-                shimmerView.visibility = View.INVISIBLE
-            }
-        }, 4000)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

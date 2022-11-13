@@ -1,5 +1,6 @@
 package com.mainApp.yelp_mini.view.activity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -82,6 +83,18 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        Log.d("onSaveInstanceState", restaurantID)
+        outState.putString("restaurantID", restaurantID)
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
+
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        restaurantID = savedInstanceState.getString("restaurantID", restaurantID)
+        Log.d("onRestoreInstanceState", restaurantID)
+        super.onRestoreInstanceState(savedInstanceState)
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
