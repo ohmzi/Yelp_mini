@@ -13,7 +13,7 @@ import com.mainApp.yelp_mini.view.adapter.DetailReviewAdapter
 
 class ReviewsFragment(
     private val context: DetailActivity,
-    val reviews: MutableList<RestaurantReview>,
+    val reviews: List<RestaurantReview>,
 ) : Fragment(R.layout.fragment_restaurant_reviews) {
 
     private lateinit var binding: FragmentRestaurantReviewsBinding

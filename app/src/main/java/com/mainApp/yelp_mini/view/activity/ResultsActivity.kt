@@ -3,8 +3,6 @@ package com.mainApp.yelp_mini.view.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -13,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mainApp.yelp_mini.databinding.ActivityResultBinding
 import com.mainApp.yelp_mini.view.adapter.ResultsRestaurantsAdapter
-import com.mainApp.yelp_mini.viewModel.ResultsViewModelClass
+import com.mainApp.yelp_mini.viewModel.ResultsViewModel
 
 
 class ResultsActivity : AppCompatActivity() {
@@ -32,11 +30,13 @@ class ResultsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Yelp Results"
-        val extras = intent.extras
-        if (extras != null) {
-            categoryTextInput = extras.getString("categoryTextInput") as String
-            locationTextInput = extras.getString("locationTextInput") as String
-            restaurantNameTextInput = extras.getString("restaurantNameTextInput") as String
+        intent.extras.let {
+            val bundle = it
+            if (bundle != null) {
+                categoryTextInput = bundle.getString("categoryTextInput") as String
+                locationTextInput = bundle.getString("locationTextInput") as String
+                restaurantNameTextInput = bundle.getString("restaurantNameTextInput") as String
+            }
         }
         binding = ActivityResultBinding.inflate(layoutInflater)
         val view = binding.root
@@ -44,40 +44,37 @@ class ResultsActivity : AppCompatActivity() {
         with(binding) {
             rvRestaurants.layoutManager = LinearLayoutManager(this@ResultsActivity)
             rvRestaurants.adapter = recyclerAdapter
-            shimmer()
+            shimmerView.startShimmer()
+            rvRestaurants.visibility = View.VISIBLE
         }
 
-        val resultsViewModelClass: ResultsViewModelClass =
-            ViewModelProvider(this)[ResultsViewModelClass::class.java]
-        resultsViewModelClass.getLiveDataObserver().observe(this) {
-            if (((it.total) == 0)) {
-                Log.d(TAG, "BlankResult, Error in getting list tostring $it")
-                binding.shimmerView.visibility = View.INVISIBLE
-                binding.imageViewLost.visibility = View.VISIBLE
-                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
-            } else {
-                Log.d(TAG, "NotBlankResult, $it.restaurants")
-                recyclerAdapter.setRestaurantsList(it.restaurants)
-                recyclerAdapter.notifyDataSetChanged()
-            }
-            Log.w(TAG, "END OF CALL,(it.total) ${it.total}")
+        val resultsViewModelClass: ResultsViewModel =
+            ViewModelProvider(this)[ResultsViewModel::class.java]
 
-        }
         resultsViewModelClass.makeAPICall(categoryTextInput,
             locationTextInput,
             restaurantNameTextInput)
-    }
 
-    private fun shimmer() {
-        binding.rvRestaurants.visibility = View.INVISIBLE
-        Handler(Looper.getMainLooper()).postDelayed({
-            with(binding) {
-                shimmerView.startShimmer()
-                rvRestaurants.visibility = View.VISIBLE
-                shimmerView.stopShimmer()
-                shimmerView.visibility = View.INVISIBLE
+        resultsViewModelClass.getRestaurantsResultLists().observe(this) {
+            val searchResults = it
+            if (searchResults != null) {
+                if (searchResults.total == 0) {
+                    Log.d(TAG, "BlankResult, Error in getting list tostring $searchResults")
+                    with(binding) {
+                        shimmerView.stopShimmer()
+                        shimmerView.visibility = View.INVISIBLE
+                        imageViewLost.visibility = View.VISIBLE
+                    }
+                    Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
+                } else {
+                    binding.shimmerView.stopShimmer()
+                    binding.shimmerView.visibility = View.INVISIBLE
+                    Log.d(TAG, "NotBlankResult, $searchResults.restaurants")
+                    recyclerAdapter.setRestaurantsList(searchResults.restaurants)
+                    recyclerAdapter.notifyDataSetChanged()
+                }
             }
-        }, 4000)
+        }
 
     }
 
@@ -85,8 +82,6 @@ class ResultsActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
-
-
 }
 
 
