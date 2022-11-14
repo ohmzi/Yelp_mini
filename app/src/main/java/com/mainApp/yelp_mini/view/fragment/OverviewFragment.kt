@@ -13,6 +13,7 @@ import java.util.*
 private const val TAG = "OverviewFragment"
 
 class OverviewFragment(
+
     val reviews: YelpRestaurantDetail,
 ) : Fragment(R.layout.fragment_restaurant_overview) {
 

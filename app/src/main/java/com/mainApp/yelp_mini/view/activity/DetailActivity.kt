@@ -1,6 +1,5 @@
 package com.mainApp.yelp_mini.view.activity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -65,6 +64,8 @@ class DetailActivity : AppCompatActivity() {
                     supportActionBar?.title = it.name
 
                 }
+            } else {
+                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -77,23 +78,25 @@ class DetailActivity : AppCompatActivity() {
                     Log.d("BlankresultNot", "$it.restaurants")
                     pagerAdapter.addFragment(ReviewsFragment(this, it.reviews), "Reviews")
                     pagerAdapter.notifyDataSetChanged()
-
                 }
+            } else {
+                Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         Log.d("onSaveInstanceState", restaurantID)
         outState.putString("restaurantID", restaurantID)
-        super.onSaveInstanceState(outState, outPersistentState)
     }
 
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle,
+    ) {
+        super.onRestoreInstanceState(savedInstanceState)
         restaurantID = savedInstanceState.getString("restaurantID", restaurantID)
         Log.d("onRestoreInstanceState", restaurantID)
-        super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onSupportNavigateUp(): Boolean {

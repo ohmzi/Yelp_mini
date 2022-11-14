@@ -30,11 +30,12 @@ class ResultsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Yelp Results"
-        val extras = intent.extras
-        if (extras != null) {
-            categoryTextInput = extras.getString("categoryTextInput") as String
-            locationTextInput = extras.getString("locationTextInput") as String
-            restaurantNameTextInput = extras.getString("restaurantNameTextInput") as String
+        intent.extras.let {
+            if (it != null) {
+                categoryTextInput = it.getString("categoryTextInput") as String
+                locationTextInput = it.getString("locationTextInput") as String
+                restaurantNameTextInput = it.getString("restaurantNameTextInput") as String
+            }
         }
         binding = ActivityResultBinding.inflate(layoutInflater)
         val view = binding.root
@@ -73,14 +74,13 @@ class ResultsActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
-
-
 }
 
 
