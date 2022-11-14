@@ -15,12 +15,45 @@ import retrofit2.Response
 
 private const val TAG = "APIClass"
 
-class APIClass {
+class APICalls {
 
     private val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail?> = MutableLiveData()
     private val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()
     private val restaurants: MutableLiveData<YelpSearchResult?> = MutableLiveData()
 
+
+    fun restaurantReviewAPICall(restaurantID: String): YelpRestaurantReviews? {
+        var apiResponse: YelpRestaurantReviews? = null
+        val retroInstance = RetroInstance.getRetroInstance()
+        val yelpService = retroInstance.create(YelpService::class.java)
+        val call = yelpService.getRestaurantsReviews("Bearer $API_KEY", restaurantID)
+        call.enqueue(object : Callback<YelpRestaurantReviews> {
+            @SuppressLint("LongLogTag")
+            override fun onResponse(
+                call: Call<YelpRestaurantReviews>,
+                response: Response<YelpRestaurantReviews>,
+            ) {
+                Log.i("$TAG RestaurantReviewAPICall", "onResponse $response")
+                val body = response.body()
+                if (body == null) {
+                    Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
+                    return
+                } else {
+                    apiResponse = body
+                }
+                //   bindReviews()
+                // reviews.addAll(body.reviews)
+            }
+
+            override fun onFailure(call: Call<YelpRestaurantReviews>, t: Throwable) {
+                Log.i(TAG, "onFailure $t")
+            }
+        })
+        return apiResponse
+    }
+
+
+/*
     fun restaurantReviewAPICall(restaurantID: String): MutableLiveData<YelpRestaurantReviews?> {
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
@@ -51,6 +84,7 @@ class APIClass {
         })
         return restaurantsReviewList
     }
+    */
 
     fun restaurantDetailAPICall(restaurantID: String): MutableLiveData<YelpRestaurantDetail?> {
         val photos = mutableListOf<String>()

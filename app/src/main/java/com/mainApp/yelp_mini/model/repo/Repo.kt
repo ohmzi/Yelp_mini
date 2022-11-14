@@ -5,13 +5,13 @@ import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.model.data.YelpRestaurantReviews
 import com.mainApp.yelp_mini.model.data.YelpSearchResult
 
-class RepoClass {
-    private val apiCall = APIClass()
+class Repo {
+    private val apiCall = APICalls()
     private var restaurants: MutableLiveData<YelpSearchResult?> = MutableLiveData()
     private var restaurantsDetailList: MutableLiveData<YelpRestaurantDetail?> = MutableLiveData()
-    private var restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()
+    private  var restaurantsReviewList: YelpRestaurantReviews? = null
 
-    fun getRestaurantReview(restaurantID: String): MutableLiveData<YelpRestaurantReviews?> {
+    fun getRestaurantReview(restaurantID: String): YelpRestaurantReviews? {
         restaurantsReviewList = apiCall.restaurantReviewAPICall(restaurantID)
         return restaurantsReviewList
     }

@@ -5,12 +5,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mainApp.yelp_mini.model.data.YelpSearchResult
-import com.mainApp.yelp_mini.model.repo.RepoClass
+import com.mainApp.yelp_mini.model.repo.Repo
 private const val TAG = "ResultsViewModelClass"
 
-open class ResultsViewModelClass : ViewModel() {
+open class ResultsViewModel : ViewModel() {
     private var restaurants: MutableLiveData<YelpSearchResult?> = MutableLiveData()
-    private val repoClass by lazy { RepoClass() }
+    private val repo by lazy { Repo() }
 
     fun getRestaurantsResultLists(): MutableLiveData<YelpSearchResult?> {
         return restaurants
@@ -19,8 +19,8 @@ open class ResultsViewModelClass : ViewModel() {
     @SuppressLint("LongLogTag")
     fun makeAPICall(categoryInput: String, locationInput: String, restaurantNameInput: String) {
         restaurants =
-            repoClass.getRestaurantResult(categoryInput, locationInput, restaurantNameInput)
-        Log.w("$TAG makeAPICall", repoClass.toString())
+            repo.getRestaurantResult(categoryInput, locationInput, restaurantNameInput)
+        Log.w("$TAG makeAPICall", repo.toString())
 
     }
 }
