@@ -15,7 +15,7 @@ import retrofit2.Response
 
 private const val TAG = "APIClass"
 
-class APIClass {
+class APICalls {
 
     private val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail?> = MutableLiveData()
     private val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()

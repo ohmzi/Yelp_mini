@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mainApp.yelp_mini.databinding.ActivityResultBinding
 import com.mainApp.yelp_mini.view.adapter.ResultsRestaurantsAdapter
-import com.mainApp.yelp_mini.viewModel.ResultsViewModelClass
+import com.mainApp.yelp_mini.viewModel.ResultsViewModel
 
 
 class ResultsActivity : AppCompatActivity() {
@@ -31,10 +31,11 @@ class ResultsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Yelp Results"
         intent.extras.let {
-            if (it != null) {
-                categoryTextInput = it.getString("categoryTextInput") as String
-                locationTextInput = it.getString("locationTextInput") as String
-                restaurantNameTextInput = it.getString("restaurantNameTextInput") as String
+            val bundle = it
+            if (bundle != null) {
+                categoryTextInput = bundle.getString("categoryTextInput") as String
+                locationTextInput = bundle.getString("locationTextInput") as String
+                restaurantNameTextInput = bundle.getString("restaurantNameTextInput") as String
             }
         }
         binding = ActivityResultBinding.inflate(layoutInflater)
@@ -47,18 +48,18 @@ class ResultsActivity : AppCompatActivity() {
             rvRestaurants.visibility = View.VISIBLE
         }
 
-        val resultsViewModelClass: ResultsViewModelClass =
-            ViewModelProvider(this)[ResultsViewModelClass::class.java]
+        val resultsViewModelClass: ResultsViewModel =
+            ViewModelProvider(this)[ResultsViewModel::class.java]
 
         resultsViewModelClass.makeAPICall(categoryTextInput,
             locationTextInput,
             restaurantNameTextInput)
 
         resultsViewModelClass.getRestaurantsResultLists().observe(this) {
-
-            if (it != null) {
-                if (((it.total) == 0)) {
-                    Log.d(TAG, "BlankResult, Error in getting list tostring $it")
+            val searchResults = it
+            if (searchResults != null) {
+                if (searchResults.total == 0) {
+                    Log.d(TAG, "BlankResult, Error in getting list tostring $searchResults")
                     with(binding) {
                         shimmerView.stopShimmer()
                         shimmerView.visibility = View.INVISIBLE
@@ -68,8 +69,8 @@ class ResultsActivity : AppCompatActivity() {
                 } else {
                     binding.shimmerView.stopShimmer()
                     binding.shimmerView.visibility = View.INVISIBLE
-                    Log.d(TAG, "NotBlankResult, $it.restaurants")
-                    recyclerAdapter.setRestaurantsList(it.restaurants)
+                    Log.d(TAG, "NotBlankResult, $searchResults.restaurants")
+                    recyclerAdapter.setRestaurantsList(searchResults.restaurants)
                     recyclerAdapter.notifyDataSetChanged()
                 }
             }

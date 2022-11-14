@@ -4,12 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mainApp.yelp_mini.model.data.YelpRestaurantDetail
 import com.mainApp.yelp_mini.model.data.YelpRestaurantReviews
-import com.mainApp.yelp_mini.model.repo.RepoClass
+import com.mainApp.yelp_mini.model.repo.Repo
 
 private const val TAG = "DetailViewModelClass"
 
 class DetailViewModelClass : ViewModel() {
-    private val repoClass by lazy { RepoClass() }
+    private val repo by lazy { Repo() }
     private var restaurantsDetailList: MutableLiveData<YelpRestaurantDetail?> = MutableLiveData()
     private var restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()
 
@@ -23,10 +23,10 @@ class DetailViewModelClass : ViewModel() {
     }
 
     fun restaurantDetailAPICall(restaurantID: String) {
-        restaurantsDetailList = repoClass.getRestaurantDetail(restaurantID)
+        restaurantsDetailList = repo.getRestaurantDetail(restaurantID)
     }
 
     fun restaurantReviewAPICall(restaurantID: String) {
-        restaurantsReviewList = repoClass.getRestaurantReview(restaurantID)
+        restaurantsReviewList = repo.getRestaurantReview(restaurantID)
     }
 }

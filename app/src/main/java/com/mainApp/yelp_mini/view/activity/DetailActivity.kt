@@ -31,6 +31,8 @@ class DetailActivity : AppCompatActivity() {
         val extras = intent.extras
         if (extras != null) {
             restaurantID = extras.getString("restaurantID") as String
+        } else {
+            Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
         }
 
         val viewPager = binding.viewpager
@@ -50,18 +52,21 @@ class DetailActivity : AppCompatActivity() {
         }
 
         detailViewModelClass.getRestaurantsDetailLists().observe(this) {
-
-            if (it != null) {
-                if (it.name.isEmpty()) {
+            val restaurantDetails = it
+            if (restaurantDetails != null) {
+                if (restaurantDetails.name.isEmpty()) {
                     Log.d("Blankresult", "Error in getting list")
                     Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.d("BlankresultNot", "$it.restaurants")
-                    OverviewFragment(it)
-                        .let { it2 -> pagerAdapter.addFragment(it2, "Overview") }
+                    Log.d("BlankresultNot", "$restaurantDetails.restaurants")
+                    OverviewFragment(restaurantDetails)
+                        .let { overviewFragment ->
+                            pagerAdapter.addFragment(overviewFragment,
+                                "Overview")
+                        }
                     pagerAdapter.notifyDataSetChanged()
-                    bindBusinessPicture(it)
-                    supportActionBar?.title = it.name
+                    bindBusinessPicture(restaurantDetails)
+                    supportActionBar?.title = restaurantDetails.name
 
                 }
             } else {
@@ -70,13 +75,15 @@ class DetailActivity : AppCompatActivity() {
         }
 
         detailViewModelClass.getRestaurantsReviewLists().observe(this) {
-            if (it != null) {
-                if (it.reviews.isEmpty()) {
+            val restaurantReviews = it
+            if (restaurantReviews != null) {
+                if (restaurantReviews.reviews.isEmpty()) {
                     Log.d("Blankresult", "Error in getting list")
                     Toast.makeText(this, "Error in getting list", Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.d("BlankresultNot", "$it.restaurants")
-                    pagerAdapter.addFragment(ReviewsFragment(this, it.reviews), "Reviews")
+                    Log.d("BlankresultNot", "$restaurantReviews.restaurants")
+                    pagerAdapter.addFragment(ReviewsFragment(this, restaurantReviews.reviews),
+                        "Reviews")
                     pagerAdapter.notifyDataSetChanged()
                 }
             } else {
