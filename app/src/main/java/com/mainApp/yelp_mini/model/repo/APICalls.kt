@@ -9,6 +9,10 @@ import com.mainApp.yelp_mini.model.data.YelpSearchResult
 import com.mainApp.yelp_mini.model.retroServices.RetroInstance
 import com.mainApp.yelp_mini.model.retroServices.YelpService
 import com.mainApp.yelp_mini.model.util.API_KEY
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,38 +22,45 @@ private const val TAG = "APIClass"
 class APICalls {
 
     private val restaurantsDetailList: MutableLiveData<YelpRestaurantDetail?> = MutableLiveData()
-    private val restaurantsReviewList: MutableLiveData<YelpRestaurantReviews?> = MutableLiveData()
     private val restaurants: MutableLiveData<YelpSearchResult?> = MutableLiveData()
 
 
     fun restaurantReviewAPICall(restaurantID: String): YelpRestaurantReviews? {
         var apiResponse: YelpRestaurantReviews? = null
+        var apiResponse2: YelpRestaurantReviews? = null
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsReviews("Bearer $API_KEY", restaurantID)
-        call.enqueue(object : Callback<YelpRestaurantReviews> {
-            @SuppressLint("LongLogTag")
-            override fun onResponse(
-                call: Call<YelpRestaurantReviews>,
-                response: Response<YelpRestaurantReviews>,
-            ) {
-                Log.i("$TAG RestaurantReviewAPICall", "onResponse $response")
-                val body = response.body()
-                if (body == null) {
-                    Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
-                    return
-                } else {
-                    apiResponse = body
-                }
-                //   bindReviews()
-                // reviews.addAll(body.reviews)
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiResponse1 = async {
+                call.enqueue(object : Callback<YelpRestaurantReviews> {
+                    @SuppressLint("LongLogTag")
+                    override fun onResponse(
+                        call: Call<YelpRestaurantReviews>,
+                        response: Response<YelpRestaurantReviews>,
+                    ) {
+                        Log.i("$TAG RestaurantReviewAPICall", "onResponse $response")
+                        val body = response.body()
+                        if (body == null) {
+                            Log.w(TAG,
+                                "Did not receive valid response body from Yelp API... exiting")
+                            return
+                        } else {
+                            apiResponse = body
+                        }
+                        //   bindReviews()
+                        // reviews.addAll(body.reviews)
+                    }
 
-            override fun onFailure(call: Call<YelpRestaurantReviews>, t: Throwable) {
-                Log.i(TAG, "onFailure $t")
+                    override fun onFailure(call: Call<YelpRestaurantReviews>, t: Throwable) {
+                        Log.i(TAG, "onFailure $t")
+                    }
+                })
+                return@async apiResponse
             }
-        })
-        return apiResponse
+            apiResponse2 = apiResponse1.await()
+        }
+        return apiResponse2
     }
 
 
@@ -86,35 +97,45 @@ class APICalls {
     }
     */
 
-    fun restaurantDetailAPICall(restaurantID: String): MutableLiveData<YelpRestaurantDetail?> {
+    fun restaurantDetailAPICall(restaurantID: String): YelpRestaurantDetail? {
+        var apiResponse: YelpRestaurantDetail? = null
+        var apiResponse2: YelpRestaurantDetail? = null
+
         val photos = mutableListOf<String>()
         val retroInstance = RetroInstance.getRetroInstance()
         val yelpService = retroInstance.create(YelpService::class.java)
         val call = yelpService.getRestaurantsDetails("Bearer $API_KEY", restaurantID)
+        CoroutineScope(Dispatchers.IO).launch {
+            val apiResponse1 = async {
 
-        call.enqueue(object : Callback<YelpRestaurantDetail> {
-            override fun onResponse(
-                call: Call<YelpRestaurantDetail>,
-                response: Response<YelpRestaurantDetail>,
-            ) {
-                Log.i(TAG, "onResponse $response")
-                val body = response.body()
-                if (body == null) {
-                    Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
-                    return
-                }
-                Log.w(TAG, body.transactions.toString())
-                photos.addAll(body.photos)
-                //    bindInfo(body)
-                restaurantsDetailList.postValue(body)//since this is in else statement when null is not possible, the nullable value is not getting sent.
+                call.enqueue(object : Callback<YelpRestaurantDetail> {
+                    override fun onResponse(
+                        call: Call<YelpRestaurantDetail>,
+                        response: Response<YelpRestaurantDetail>,
+                    ) {
+                        Log.i(TAG, "onResponse $response")
+                        val body = response.body()
+                        if (body == null) {
+                            Log.w(TAG,
+                                "Did not receive valid response body from Yelp API... exiting")
+                            return
+                        }
+                        Log.w(TAG, body.transactions.toString())
+                        photos.addAll(body.photos)
+                        //    bindInfo(body)
+                        restaurantsDetailList.postValue(body)//since this is in else statement when null is not possible, the nullable value is not getting sent.
 
+                    }
+
+                    override fun onFailure(call: Call<YelpRestaurantDetail>, t: Throwable) {
+                        Log.i(TAG, "onFailure $t")
+                    }
+                })
+                return@async apiResponse
             }
-
-            override fun onFailure(call: Call<YelpRestaurantDetail>, t: Throwable) {
-                Log.i(TAG, "onFailure $t")
-            }
-        })
-        return restaurantsDetailList
+            apiResponse2 = apiResponse1.await()
+        }
+        return apiResponse2
     }
 
     fun restaurantResultAPICall(

@@ -23,7 +23,7 @@ class DetailViewModelClass : ViewModel() {
     }
 
     fun restaurantDetailAPICall(restaurantID: String) {
-        restaurantsDetailList = repo.getRestaurantDetail(restaurantID)
+        restaurantsDetailList.postValue (repo.getRestaurantDetail(restaurantID))
     }
 
     fun restaurantReviewAPICall(restaurantID: String) {
