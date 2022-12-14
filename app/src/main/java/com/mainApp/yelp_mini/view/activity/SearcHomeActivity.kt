@@ -15,9 +15,9 @@ class SearchHome : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        var categoryTextInput: String
-        var locationTextInput: String
-        var restaurantNameTextInput: String
+         lateinit var categoryTextInput : String
+         lateinit var locationTextInput : String
+         lateinit var restaurantNameTextInput : String
 
         super.onCreate(savedInstanceState)
 
@@ -26,22 +26,15 @@ class SearchHome : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // finding the button
-        val searchButton = findViewById<Button>(R.id.bnSearch)
+        val searchButton = binding.bnSearch
 
-        // finding the edit text
-        val categoryInput = findViewById<EditText>(R.id.categoryInput)
-        val locationInput = findViewById<EditText>(R.id.locationInput)
-        val restaurantNameInput = findViewById<EditText>(R.id.restaurantNameInput)
-
-        // Setting On Click Listener
         searchButton.setOnClickListener {
 
-            // Getting the user input
-            categoryTextInput = categoryInput.text.toString()
-            locationTextInput = locationInput.text.toString()
-            restaurantNameTextInput = restaurantNameInput.text.toString()
-
+            with(binding){
+                categoryTextInput = categoryInput.text.toString()
+                locationTextInput = locationInput.text.toString()
+                restaurantNameTextInput = restaurantNameInput.text.toString()
+            }
 
             val intent = Intent(this, ResultsActivity::class.java)
 
@@ -55,9 +48,9 @@ class SearchHome : AppCompatActivity() {
             intent.putExtras(extras)
 
             if (locationTextInput.equals("")) {
-                locationInput.error = "Required" //it gives user to hint
-                locationInput.hint =
-                    "Please Enter Address, City or Postal Code"  //it gives user to info message //use any one //
+                binding.locationInput.error = "Required"
+                binding.locationInput.hint =
+                    "Please Enter Address, City or Postal Code"
             } else {
                 startActivity(intent)
             }

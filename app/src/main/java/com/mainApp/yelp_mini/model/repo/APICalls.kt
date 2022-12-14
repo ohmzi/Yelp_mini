@@ -39,7 +39,7 @@ class APICalls {
                         call: Call<YelpRestaurantReviews>,
                         response: Response<YelpRestaurantReviews>,
                     ) {
-                        Log.i("$TAG RestaurantReviewAPICall", "onResponse $response")
+                        Log.i("$TAG RestaurantReviewAPICall", "onResponse ${response.body()}")
                         val body = response.body()
                         if (body == null) {
                             Log.w(TAG,
