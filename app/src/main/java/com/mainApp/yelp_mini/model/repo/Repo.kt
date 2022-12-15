@@ -21,18 +21,29 @@ class Repo {
         return restaurantsDetailList
     }
 
-    fun getRestaurantResult(
+    suspend fun getRestaurantResult(
         categoryInput: String,
         locationInput: String,
         restaurantNameInput: String,
-    ): MutableLiveData<YelpSearchResult?> {
-        restaurants =
-            apiCall.restaurantResultAPICall(categoryInput,
+    ): YelpSearchResult? {
+        return try {
+            apiCall.restaurantResultAPICall(
+                categoryInput,
                 locationInput,
-                restaurantNameInput)
-        return restaurants
+                restaurantNameInput
+            )
+        } catch (e: Exception) {
+            null
+        }
     }
 
+    fun apiCall(restaurantID: String): YelpRestaurantDetail? {
+        return try {
+            apiCall.restaurantDetailAPICall2(restaurantID)
+        } catch (e: Exception) {
+            null
+        }
+    }
 
 }
 

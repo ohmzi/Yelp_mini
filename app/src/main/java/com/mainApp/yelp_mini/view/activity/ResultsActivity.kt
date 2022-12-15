@@ -51,11 +51,13 @@ class ResultsActivity : AppCompatActivity() {
         val resultsViewModelClass: ResultsViewModel =
             ViewModelProvider(this)[ResultsViewModel::class.java]
 
-        resultsViewModelClass.makeAPICall(categoryTextInput,
+        resultsViewModelClass.makeAPICall(
+            categoryTextInput,
             locationTextInput,
-            restaurantNameTextInput)
+            restaurantNameTextInput
+        )
 
-        resultsViewModelClass.getRestaurantsResultLists().observe(this) {
+        resultsViewModelClass.restaurants.observe(this) {
             val searchResults = it
             if (searchResults != null) {
                 if (searchResults.total == 0) {
@@ -74,6 +76,14 @@ class ResultsActivity : AppCompatActivity() {
                     recyclerAdapter.notifyDataSetChanged()
                 }
             }
+        }
+
+        resultsViewModelClass.errorLiveData.observe(this) {
+            //Do something related to error scenario
+            //show toast or popup
+            binding.shimmerView.stopShimmer()
+            binding.shimmerView.visibility = View.INVISIBLE
+            Toast.makeText(this, " API Error ", Toast.LENGTH_LONG).show()
         }
 
     }
